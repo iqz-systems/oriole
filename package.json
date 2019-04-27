@@ -1,0 +1,24 @@
+{
+  "name": "@iqz/oriole",
+  "version": "1.0.0",
+  "description": "A NodeJS REST client for Magento 2",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iqz-systems/oriole.git"
+  },
+  "keywords": [
+    "nodejs",
+    "rest-api",
+    "magento2"
+  ],
+  "author": "Rajshri Mohan K S",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/iqz-systems/oriole/issues"
+  },
+  "homepage": "https://github.com/iqz-systems/oriole#readme"
+}
