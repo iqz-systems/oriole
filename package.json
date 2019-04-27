@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "A NodeJS REST client for Magento 2",
   "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "private": "false",
   "scripts": {
+    "build": "rimraf ./dist && tsc",
+    "prepublishOnly": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +24,14 @@
   "bugs": {
     "url": "https://github.com/iqz-systems/oriole/issues"
   },
-  "homepage": "https://github.com/iqz-systems/oriole#readme"
+  "homepage": "https://github.com/iqz-systems/oriole#readme",
+  "devDependencies": {
+    "@types/lodash": "^4.14.123",
+    "@types/node": "^11.13.8",
+    "rimraf": "^2.6.3",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "lodash": "^4.17.11"
+  }
 }
