@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { Consumer } from './consumer.interface';
 import { Options } from './options.interface';
 import { RequestOptions } from './request-options.interface';
@@ -5,6 +6,7 @@ import { Token } from './token.interface';
 import { Authorization } from './authorization.interface';
 import { Data } from './data.interface';
 import { Header } from './header.interface';
+import { Param } from './param.interface';
 
 export class OAuth {
   consumer: Consumer;
@@ -119,19 +121,27 @@ export class OAuth {
    * @return                    The parameter string
    */
   getParameterString(request: RequestOptions, oauthData: Data): string {
-    let baseStringData;
+    let baseStringData: any;
     if (oauthData.oauth_body_hash) {
-      baseStringData = this.sortObject(this.percentEncodeData(this.mergeObject(oauthData, this.deParamUrl(request.url))));
+      baseStringData = this.sortObject(
+        this.percentEncodeData(
+          _.merge(oauthData, this.deParamUrl(request.url))
+        )
+      );
     } else {
-      baseStringData = this.sortObject(this.percentEncodeData(this.mergeObject(oauthData, this.mergeObject(request.data, this.deParamUrl(request.url)))));
+      baseStringData = this.sortObject(
+        this.percentEncodeData(
+          _.merge(oauthData, _.merge(request.data, this.deParamUrl(request.url)))
+        )
+      );
     }
 
     let dataStr = '';
 
-    //base_string_data to string
+    //baseStringData to string
     for (let i = 0; i < baseStringData.length; i++) {
-      var key = base_string_data[i].key;
-      var value = base_string_data[i].value;
+      var key = baseStringData[i].key;
+      var value = baseStringData[i].value;
       // check if the value is an array
       // this means that this key has multiple values
       if (value && Array.isArray(value)) {
@@ -140,45 +150,143 @@ export class OAuth {
 
         var valString = "";
         // serialize all values for this key: e.g. formkey=formvalue1&formkey=formvalue2
-        value.forEach((function(item, i) {
+        value.forEach(((item: any, i: number) => {
           valString += key + '=' + item;
           if (i < value.length) {
             valString += "&";
           }
         }).bind(this));
-        data_str += valString;
+        dataStr += valString;
       } else {
-        data_str += key + '=' + value + '&';
+        dataStr += key + '=' + value + '&';
       }
     }
+
+    //remove the last character
+    dataStr = dataStr.substr(0, dataStr.length - 1);
+    return dataStr;
   }
 
   /**
-   * Generate the signing key.
-   *
-   * Key = "<Consumer Key>&<Token Key or an empty string>"
+   * Create a signing key.
+   * @method getSigningKey
+   * @param  tokenSecret   Secret Token
+   * @return               [description]
    */
-  getSigningKey(token_secret: string | undefined): string { }
+  getSigningKey(tokenSecret: string | undefined): string {
+    tokenSecret = tokenSecret || '';
+
+    if (!this.lastAmpersand && !tokenSecret) {
+      return this.percentEncode(this.consumer.secret);
+    }
+
+    return this.percentEncode(this.consumer.secret) + '&' + this.percentEncode(tokenSecret);
+  }
 
   /**
    * Return the the URL without its querystring.
+   * @method getBaseUrl
+   * @param  url        [description]
+   * @return            [description]
    */
-  getBaseUrl(url: string): string { }
+  getBaseUrl(url: string): string {
+    return url.split('?')[0];
+  }
 
   /**
-   * Parse querystring / form data.
+   * Get data from String
+   * @method deParam
+   * @param  str     The input string
+   * @return         The de-paramed result.
    */
-  deParam(str: string): Param { }
+  deParam(str: string): Param {
+    const arr = str.split('&');
+    let data: any = {};
+
+    for (let i = 0; i < arr.length; i++) {
+      let item = arr[i].split('=');
+
+      // '' value
+      item[1] = item[1] || '';
+
+      // check if the key already exists
+      // this can occur if the QS part of the url contains duplicate
+      // keys like this: ?formkey=formvalue1&formkey=formvalue2
+      if (data[item[0]]) {
+        // the key exists already
+        if (!Array.isArray(data[item[0]])) {
+          // replace the value with an array containing the already present value
+          data[item[0]] = [data[item[0]]];
+        }
+        // and add the new found value to it
+        data[item[0]].push(decodeURIComponent(item[1]));
+      } else {
+        // it doesn't exist, just put the found value in the data object
+        data[item[0]] = decodeURIComponent(item[1]);
+      }
+    }
+
+    return data;
+  }
 
   /**
-   * Parse querystring from an url
+   * Get data from url
+   * @method deParamUrl
+   * @param  url        The input url.
+   * @return            [description]
    */
-  deParamUrl(url: string): Param { }
+  deParamUrl(url: string): Param {
+    const tmp = url.split('?');
+
+    if (tmp.length === 1) {
+      return {};
+    }
+
+    return this.deParam(tmp[1]);
+  }
 
   /**
-   * Form data encoding.
+   * Percent encode string
+   * @method percentEncode
+   * @param  str           string to be encoded
+   * @return               percent encoded string
    */
-  percentEncode(str: string): string { }
+  percentEncode(str: string): string {
+    return encodeURIComponent(str)
+      .replace(/\!/g, "%21")
+      .replace(/\*/g, "%2A")
+      .replace(/\'/g, "%27")
+      .replace(/\(/g, "%28")
+      .replace(/\)/g, "%29");
+  }
+
+  /**
+   * Percent Encode Object
+   * @method percentEncodeData
+   * @param  data              data
+   * @return                   percent encoded data
+   */
+  private percentEncodeData(data: any): object {
+    let result: any = {};
+
+    for (let key in data) {
+      let value = data[key];
+      // check if the value is an array
+      if (value && Array.isArray(value)) {
+        let newValue: any[] = [];
+        // percentEncode every value
+        value.forEach(((val: any) => {
+          newValue.push(this.percentEncode(val));
+        }).bind(this));
+        value = newValue;
+      } else {
+        value = this.percentEncode(value);
+      }
+      result[this.percentEncode(key)] = value;
+    }
+
+    return result;
+  }
 
   /**
    * Get OAuth data as Header
