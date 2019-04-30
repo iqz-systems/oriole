@@ -1,36 +1,34 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { Token, OAuth, Header, RequestOptions } from './oauth';
 import * as _ from 'lodash';
 import * as crypto from 'crypto';
-
-function hash_function_sha1(baseString: string, key: string): string {
-  return crypto.createHmac('sha1', key).update(baseString).digest('base64');
-}
+import axios, { AxiosRequestConfig } from 'axios';
+import { Token, OAuth, Header, RequestOptions } from './oauth';
 
 export class Oriole {
 
   private oauth: OAuth;
   private accessToken: Token;
 
-  constructor() {
+  constructor(initParams: OAuthInitParams) {
     this.oauth = new OAuth({
       consumer: {
-        key: '7pg4z9uoerwf5em0fajo9ky0ihkscj80',
-        secret: 'bi1c6pp13mz36tujfn7375ic1teh2lny'
+        key: initParams.consumer.key,
+        secret: initParams.consumer.secret
       },
       signatureMethod: 'HMAC-SHA1',
-      hashFunction: hash_function_sha1
+      hashFunction: (baseString: string, key: string): string => {
+        return crypto.createHmac('sha1', key).update(baseString).digest('base64');
+      }
     });
     this.accessToken = {
-      key: 'm6ar94w9782u3fnagbjtwscqs65t7lzw',
-      secret: 'm0tqd4yyi2jrepqrsyuhhcwrvcs9xhmw'
+      key: initParams.accessToken.key,
+      secret: initParams.accessToken.secret
     };
   }
 
   async apiCall(requestData: any, requestToken = ''): Promise<void> {
     const requestOptions: RequestOptions = {
       method: 'get',
-      url: 'http://localhost:8080/rest/V1/products',
+      url: 'http://localhost:8080/rest/V1/products?fields=items[sku,name,price]&searchCriteria=carrot',
       data: requestData
     };
     let oAuthHeader: Header;
@@ -69,5 +67,16 @@ export class Oriole {
       }
       console.log(error.config);
     }
+  }
+}
+
+export interface OAuthInitParams {
+  consumer: {
+    key: string,
+    secret: string
+  },
+  accessToken: {
+    key: string,
+    secret: string
   }
 }

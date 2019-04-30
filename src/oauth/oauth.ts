@@ -350,7 +350,7 @@ export class OAuth {
    * @return current unix timestamp
    */
   private getTimeStamp(): number {
-    return Date.now();
+    return parseInt((new Date().getTime() / 1000) + '', 10);
   }
 
   /**
