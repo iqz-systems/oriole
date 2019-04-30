@@ -22,7 +22,7 @@ export class OAuth {
 
   constructor(opts: Options) {
     this.consumer = opts.consumer;
-    this.nonceLength = opts.nonceLength;
+    this.nonceLength = opts.nonceLength || 32;
     this.version = opts.version || '1.0';
     this.parameterSeparator = opts.parameterSeparator || ', ';
     this.realm = opts.realm;
@@ -53,20 +53,29 @@ export class OAuth {
    * @return           OAuth Authorized data
    */
   authorize(request: RequestOptions, token: Token): Authorization {
-    const oAuthData: Authorization = {
+    const oAuthData: Data = {
       oauth_consumer_key: this.consumer.key,
       oauth_nonce: this.getNonce(),
       oauth_signature_method: this.signatureMethod,
       oauth_timestamp: this.getTimeStamp(),
-      oauth_version: this.version,
-      oauth_token: (token.key !== undefined) ? token.key : undefined,
-      oauth_body_hash: (request.includeBodyHash) ? this.getBodyHash(request, token.secret) : undefined,
-      oauth_signature: ''
+      oauth_version: this.version
     };
 
-    oAuthData.oauth_signature = this.getSignature(request, token.secret, oAuthData);
+    if (token.key !== undefined) {
+      oAuthData.oauth_token = token.key;
+    }
 
-    return oAuthData;
+    if (!request.data) {
+      request.data = {};
+    }
+
+    if (request.includeBodyHash) {
+      oAuthData.oauth_body_hash = this.getBodyHash(request, token.secret);
+    }
+
+    const oAuthSignature = this.getSignature(request, token.secret, oAuthData);
+
+    return _.merge(oAuthData, { oauth_signature: oAuthSignature });
   }
 
   /**
@@ -74,11 +83,13 @@ export class OAuth {
    * @method getSignature
    * @param  request      data
    * @param  tokenSecret  key and secret token
-   * @param  oauthData    OAuth data
+   * @param  oAuthData    OAuth data
    * @return              The signature
    */
-  getSignature(request: RequestOptions, tokenSecret: string | undefined, oauthData: Data): string {
-    return this.hashFunction(this.getBaseString(request, oauthData), this.getSigningKey(tokenSecret));
+  private getSignature(request: RequestOptions, tokenSecret: string | undefined, oAuthData: Data): string {
+    const baseString = this.getBaseString(request, oAuthData);
+    const signingKey = this.getSigningKey(tokenSecret);
+    return this.hashFunction(baseString, signingKey);
   }
 
   /**
@@ -88,7 +99,7 @@ export class OAuth {
    * @param  tokenSecret  key and secret token
    * @return              The body hash
    */
-  getBodyHash(request: RequestOptions, tokenSecret: string | undefined): string {
+  private getBodyHash(request: RequestOptions, tokenSecret: string | undefined): string {
     const body = (typeof request.data == 'string') ? request.data : JSON.stringify(request.data);
 
     if (!this.bodyHashFunction) {
@@ -101,37 +112,37 @@ export class OAuth {
    * Base String = Method + Base Url + ParameterString
    * @method getBaseString
    * @param  request       data
-   * @param  oauthData     data
+   * @param  oAuthData     data
    * @return               The base string
    */
-  getBaseString(request: RequestOptions, oauthData: Data): string {
+  private getBaseString(request: RequestOptions, oAuthData: Data): string {
     return request.method.toUpperCase()
       + '&' + this.percentEncode(this.getBaseUrl(request.url))
-      + '&' + this.percentEncode(this.getParameterString(request, oauthData));
+      + '&' + this.percentEncode(this.getParameterString(request, oAuthData));
   }
 
   /**
    * Get data from url
-   * -> merge with oauth data
+   * -> merge with oAuth data
    * -> percent encode key & value
    * -> sort
    * @method getParameterString
    * @param  request            data
-   * @param  oauthData          data
+   * @param  oAuthData          data
    * @return                    The parameter string
    */
-  getParameterString(request: RequestOptions, oauthData: Data): string {
+  private getParameterString(request: RequestOptions, oAuthData: Data): string {
     let baseStringData: any;
-    if (oauthData.oauth_body_hash) {
+    if (oAuthData.oauth_body_hash) {
       baseStringData = this.sortObject(
         this.percentEncodeData(
-          _.merge(oauthData, this.deParamUrl(request.url))
+          _.merge(oAuthData, this.deParamUrl(request.url))
         )
       );
     } else {
       baseStringData = this.sortObject(
         this.percentEncodeData(
-          _.merge(oauthData, _.merge(request.data, this.deParamUrl(request.url)))
+          _.merge(oAuthData, _.merge(request.data, this.deParamUrl(request.url)))
         )
       );
     }
@@ -140,22 +151,22 @@ export class OAuth {
 
     //baseStringData to string
     for (let i = 0; i < baseStringData.length; i++) {
-      var key = baseStringData[i].key;
-      var value = baseStringData[i].value;
+      let key = baseStringData[i].key;
+      let value = baseStringData[i].value;
       // check if the value is an array
       // this means that this key has multiple values
       if (value && Array.isArray(value)) {
         // sort the array first
         value.sort();
 
-        var valString = "";
+        let valString = "";
         // serialize all values for this key: e.g. formkey=formvalue1&formkey=formvalue2
         value.forEach(((item: any, i: number) => {
           valString += key + '=' + item;
           if (i < value.length) {
             valString += "&";
           }
-        }).bind(this));
+        }));
         dataStr += valString;
       } else {
         dataStr += key + '=' + value + '&';
@@ -173,7 +184,7 @@ export class OAuth {
    * @param  tokenSecret   Secret Token
    * @return               [description]
    */
-  getSigningKey(tokenSecret: string | undefined): string {
+  private getSigningKey(tokenSecret: string | undefined): string {
     tokenSecret = tokenSecret || '';
 
     if (!this.lastAmpersand && !tokenSecret) {
@@ -189,7 +200,7 @@ export class OAuth {
    * @param  url        [description]
    * @return            [description]
    */
-  getBaseUrl(url: string): string {
+  private getBaseUrl(url: string): string {
     return url.split('?')[0];
   }
 
@@ -199,7 +210,7 @@ export class OAuth {
    * @param  str     The input string
    * @return         The de-paramed result.
    */
-  deParam(str: string): Param {
+  private deParam(str: string): Param {
     const arr = str.split('&');
     let data: any = {};
 
@@ -235,7 +246,7 @@ export class OAuth {
    * @param  url        The input url.
    * @return            [description]
    */
-  deParamUrl(url: string): Param {
+  private deParamUrl(url: string): Param {
     const tmp = url.split('?');
 
     if (tmp.length === 1) {
@@ -251,13 +262,14 @@ export class OAuth {
    * @param  str           string to be encoded
    * @return               percent encoded string
    */
-  percentEncode(str: string): string {
-    return encodeURIComponent(str)
+  private percentEncode(str: string): string {
+    const result = encodeURIComponent(str)
       .replace(/\!/g, "%21")
       .replace(/\*/g, "%2A")
       .replace(/\'/g, "%27")
       .replace(/\(/g, "%28")
       .replace(/\)/g, "%29");
+    return result;
   }
 
   /**
@@ -266,21 +278,21 @@ export class OAuth {
    * @param  data              data
    * @return                   percent encoded data
    */
-  private percentEncodeData(data: any): object {
-    let result: any = {};
+  private percentEncodeData(data: Data): { [prop: string]: string | string[] } {
+    let result: { [prop: string]: string | string[] } = {};
 
     for (let key in data) {
       let value = data[key];
       // check if the value is an array
       if (value && Array.isArray(value)) {
-        let newValue: any[] = [];
+        let newValue: string[] = [];
         // percentEncode every value
-        value.forEach(((val: any) => {
+        for (let val of value) {
           newValue.push(this.percentEncode(val));
-        }).bind(this));
+        }
         value = newValue;
       } else {
-        value = this.percentEncode(value);
+        value = this.percentEncode(value as string);
       }
       result[this.percentEncode(key)] = value;
     }
@@ -291,11 +303,11 @@ export class OAuth {
   /**
    * Get OAuth data as Header
    * @method toHeader
-   * @param  oauthData oAuthData
+   * @param  oAuthData oAuthData
    * @return           The header object
    */
-  toHeader(oauthData: Authorization): Header {
-    const sorted = this.sortObject(oauthData);
+  toHeader(oAuthData: Authorization): Header {
+    const sorted = this.sortObject(oAuthData);
 
     let headerValue = 'OAuth ';
 
@@ -303,11 +315,11 @@ export class OAuth {
       headerValue += 'realm="' + this.realm + '"' + this.parameterSeparator;
     }
 
-    for (var i = 0; i < sorted.length; i++) {
-      if (sorted[i].key.indexOf('oauth_') !== 0)
+    for (let i = 0; i < sorted.length; i++) {
+      if ((sorted[i].key as string).indexOf('oauth_') !== 0)
         continue;
 
-      headerValue += this.percentEncode(sorted[i].key) + '="' + this.percentEncode(sorted[i].value as string) + '"' + this.parameterSeparator;
+      headerValue += this.percentEncode(sorted[i].key as string) + '="' + this.percentEncode(sorted[i].value as string) + '"' + this.parameterSeparator;
     }
 
     return {
@@ -320,12 +332,13 @@ export class OAuth {
    * @method getNonce
    * @return a random word characters string
    */
-  getNonce(): string {
+  private getNonce(): string {
     const wordCharacters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let result = '';
 
     for (let i = 0; i < this.nonceLength; i++) {
-      result += wordCharacters[Math.random() * wordCharacters.length];
+      const random = parseInt((Math.random() * wordCharacters.length) + '', 10);
+      result += wordCharacters[random];
     }
 
     return result;
@@ -336,7 +349,7 @@ export class OAuth {
    * @method getTimeStamp
    * @return current unix timestamp
    */
-  getTimeStamp(): number {
+  private getTimeStamp(): number {
     return Date.now();
   }
 
@@ -346,7 +359,7 @@ export class OAuth {
    * @param  data       object to be sorted
    * @return            sorted result
    */
-  sortObject<O extends { [k: string]: any }, K extends string>(data: O): Array<{ key: keyof O, value: O[K] }> {
+  private sortObject<O extends { [k: string]: any }, K extends string>(data: O): Array<{ key: keyof O, value: O[K] }> {
     let keys = Object.keys(data);
     let result = [];
 

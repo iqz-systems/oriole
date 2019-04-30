@@ -6,3 +6,4 @@ export { Options } from './options.interface';
 export { Param } from './param.interface';
 export { RequestOptions } from './request-options.interface';
 export { Token } from './token.interface';
+export { OAuth } from './oauth';

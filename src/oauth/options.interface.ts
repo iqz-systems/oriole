@@ -17,7 +17,7 @@ export interface Options {
    */
   hashFunction?: (base_string: string, key: string) => string;
   lastAmpersand?: boolean;
-  nonceLength: number;
+  nonceLength?: number;
   parameterSeparator?: string;
   realm?: string;
   signatureMethod?: string;
