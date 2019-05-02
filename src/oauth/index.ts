@@ -7,3 +7,4 @@ export { Param } from './param.interface';
 export { RequestOptions } from './request-options.interface';
 export { Token } from './token.interface';
 export { OAuth } from './oauth';
+export { AuthorizationHeader } from './authorization-header';

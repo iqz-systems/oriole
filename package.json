@@ -1,14 +1,14 @@
 {
   "name": "@iqz/oriole",
-  "version": "1.0.0",
-  "description": "A NodeJS REST client for Magento 2",
+  "version": "0.0.1",
+  "description": "A NodeJS REST client for Magento 2 with full Typescript support.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "private": "false",
   "scripts": {
     "build": "rimraf ./dist && tsc",
-    "start": "npm run build && node ./dist/index.js",
     "prepublishOnly": "npm run build",
+    "sample": "npm run build && node ./dist/sample.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,7 +34,9 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "class-transformer": "^0.2.0",
     "lodash": "^4.17.11",
-    "oauth-1.0a": "^2.2.5"
+    "oauth-1.0a": "^2.2.5",
+    "reflect-metadata": "^0.1.13"
   }
 }

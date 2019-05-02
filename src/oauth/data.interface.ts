@@ -2,7 +2,7 @@
  * OAuth data, excluding the signature.
  */
 export interface Data {
-  [prop: string]: string | string[] | number | undefined;
+  [key: string]: string | string[] | number | undefined;
   oauth_consumer_key: string;
   oauth_nonce: string;
   oauth_signature_method: string;

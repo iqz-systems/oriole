@@ -5,8 +5,8 @@ import { RequestOptions } from './request-options.interface';
 import { Token } from './token.interface';
 import { Authorization } from './authorization.interface';
 import { Data } from './data.interface';
-import { Header } from './header.interface';
 import { Param } from './param.interface';
+import { AuthorizationHeader } from './authorization-header';
 
 export class OAuth {
   consumer: Consumer;
@@ -306,7 +306,13 @@ export class OAuth {
    * @param  oAuthData oAuthData
    * @return           The header object
    */
-  toHeader(oAuthData: Authorization): Header {
+  /**
+   * Get oAuth data as header
+   * @method toHeader
+   * @param  oAuthData The current oAuth data
+   * @return           An Authorization header object of the current oAuth data.
+   */
+  toHeader(oAuthData: Authorization): AuthorizationHeader {
     const sorted = this.sortObject(oAuthData);
 
     let headerValue = 'OAuth ';
@@ -322,9 +328,7 @@ export class OAuth {
       headerValue += this.percentEncode(sorted[i].key as string) + '="' + this.percentEncode(sorted[i].value as string) + '"' + this.parameterSeparator;
     }
 
-    return {
-      Authorization: headerValue.substr(0, headerValue.length - this.parameterSeparator.length) //cut the last chars
-    };
+    return new AuthorizationHeader(headerValue.substr(0, headerValue.length - this.parameterSeparator.length)); // cut the last chars
   }
 
   /**
