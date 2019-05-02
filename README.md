@@ -4,7 +4,7 @@
 
 A NodeJS REST client for Magento 2 with full Typescript support.
 
-This package is largely inspired (a straight lift, even) by [Marko Nouvak][m-nouvak]'s [magento2-rest-client][magento2-rest-client] and [Divante Ltd][divante-ltd].'s [magento2-rest-client][magento2-rest-client-divante] packages. What they lacked was full Typescript support, which we've filled in, with some additional tweaks of our own.
+This package is largely inspired by [Marko Nouvak][m-nouvak]'s [magento2-rest-client][magento2-rest-client] and [Divante Ltd][divante-ltd].'s [magento2-rest-client][magento2-rest-client-divante] packages. What they lacked was full Typescript support, which we've filled in, with some additional tweaks of our own.
 
 This module also uses a full Typescript rewrite of [Ddo][ddo]'s [oauth-1.0a][oauth-1-a] module among others.
 
