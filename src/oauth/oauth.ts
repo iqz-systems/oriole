@@ -1,17 +1,16 @@
 import * as _ from 'lodash';
 import * as qs from 'querystring';
-import { Consumer } from './consumer.interface';
-import { Options } from './options.interface';
-import { RequestOptions } from './request-options.interface';
-import { Token } from './token.interface';
-import { Authorization } from './authorization.interface';
-import { Data } from './data.interface';
+import { IOAuthOptions } from './oauth-options.interface';
+import { IRequestOptions } from './request-options.interface';
 import { AuthorizationHeader } from './authorization-header';
 import { Helpers } from './helpers';
-import { ParamMap } from './param-map.interface';
+import { IParamMap } from './param-map.interface';
+import { ITokenPair } from './token-pair.interface';
+import { IOAuthData } from './oauth-data.interface';
+import { ISignedOAuthData } from './signed-oauth-data.interface';
 
 export class OAuth {
-  consumer: Consumer;
+  consumer: ITokenPair;
   lastAmpersand: boolean;
   nonceLength: number;
   parameterSeparator: string;
@@ -22,7 +21,7 @@ export class OAuth {
   hashFunction: (baseString: string, key: string) => string;
   bodyHashFunction: (baseString: string, key: string) => string;
 
-  constructor(opts: Options) {
+  constructor(opts: IOAuthOptions) {
     this.consumer = opts.consumer;
     this.nonceLength = opts.nonceLength || 32;
     this.version = opts.version || '1.0';
@@ -54,8 +53,8 @@ export class OAuth {
    * @param  token     key and secret token
    * @return           OAuth Authorized data
    */
-  authorize(request: RequestOptions, token: Token): Authorization {
-    const oAuthData: Data = {
+  authorize(request: IRequestOptions, token: ITokenPair): ISignedOAuthData {
+    const oAuthData: IOAuthData = {
       oauth_consumer_key: this.consumer.key,
       oauth_nonce: this.getNonce(),
       oauth_signature_method: this.signatureMethod,
@@ -88,7 +87,7 @@ export class OAuth {
    * @param  oAuthData    OAuth data
    * @return              The signature
    */
-  private getSignature(request: RequestOptions, tokenSecret: string | undefined, oAuthData: Data): string {
+  private getSignature(request: IRequestOptions, tokenSecret: string | undefined, oAuthData: IOAuthData): string {
     const baseString = this.getBaseString(request, oAuthData);
     const signingKey = this.getSigningKey(tokenSecret);
     return this.hashFunction(baseString, signingKey);
@@ -101,7 +100,7 @@ export class OAuth {
    * @param  tokenSecret  key and secret token
    * @return              The body hash
    */
-  private getBodyHash(request: RequestOptions, tokenSecret: string | undefined): string {
+  private getBodyHash(request: IRequestOptions, tokenSecret: string | undefined): string {
     const body = (typeof request.data == 'string') ? request.data : JSON.stringify(request.data);
 
     if (!this.bodyHashFunction) {
@@ -117,7 +116,7 @@ export class OAuth {
    * @param  oAuthData     data
    * @return               The base string
    */
-  private getBaseString(request: RequestOptions, oAuthData: Data): string {
+  private getBaseString(request: IRequestOptions, oAuthData: IOAuthData): string {
     return request.method.toUpperCase()
       + '&' + Helpers.percentEncode(Helpers.getBaseUrl(request.url))
       + '&' + Helpers.percentEncode(this.getParameterString(request, oAuthData));
@@ -133,7 +132,7 @@ export class OAuth {
    * @param  oAuthData          data
    * @return                    The parameter string
    */
-  private getParameterString(request: RequestOptions, oAuthData: Data): string {
+  private getParameterString(request: IRequestOptions, oAuthData: IOAuthData): string {
     let baseStringData: any;
     if (oAuthData.oauth_body_hash) {
       baseStringData = Helpers.sortObject(
@@ -183,7 +182,7 @@ export class OAuth {
   /**
    * Create a signing key.
    * @method getSigningKey
-   * @param  tokenSecret   Secret Token
+   * @param  tokenSecret   Secret TokenPair
    * @return               [description]
    */
   private getSigningKey(tokenSecret: string | undefined): string {
@@ -202,7 +201,7 @@ export class OAuth {
    * @param  url        The input url.
    * @return            [description]
    */
-  private deParamUrl(url: string): ParamMap {
+  private deParamUrl(url: string): IParamMap {
     const tmp = url.split('?');
 
     if (tmp.length === 1) {
@@ -218,7 +217,7 @@ export class OAuth {
    * @param  data              data
    * @return                   percent encoded data
    */
-  private percentEncodeData(data: Data): { [prop: string]: string | string[] } {
+  private percentEncodeData(data: IOAuthData): { [prop: string]: string | string[] } {
     let result: { [prop: string]: string | string[] } = {};
 
     for (let key in data) {
@@ -252,7 +251,7 @@ export class OAuth {
    * @param  oAuthData The current oAuth data
    * @return           An Authorization header object of the current oAuth data.
    */
-  toHeader(oAuthData: Authorization): AuthorizationHeader {
+  toHeader(oAuthData: ISignedOAuthData): AuthorizationHeader {
     const sorted = Helpers.sortObject(oAuthData);
 
     let headerValue = 'OAuth ';

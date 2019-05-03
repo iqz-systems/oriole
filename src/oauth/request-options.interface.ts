@@ -1,7 +1,7 @@
 /**
  * Request options.
  */
-export interface RequestOptions {
+export interface IRequestOptions {
   url: string;
   method: string;
   data?: any;

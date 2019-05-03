@@ -1,6 +1,6 @@
 /**
  * Key-value pair map
  */
-export interface ParamMap {
+export interface IParamMap {
   [key: string]: string | string[];
 }

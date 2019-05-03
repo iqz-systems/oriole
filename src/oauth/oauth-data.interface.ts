@@ -1,7 +1,7 @@
 /**
  * OAuth data, excluding the signature.
  */
-export interface Data {
+export interface IOAuthData {
   [key: string]: string | string[] | number | undefined;
   oauth_consumer_key: string;
   oauth_nonce: string;

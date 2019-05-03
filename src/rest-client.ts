@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import * as crypto from 'crypto';
-import { OAuth, Token, AuthorizationHeader } from './oauth';
+import { OAuth, ITokenPair, AuthorizationHeader } from './oauth';
 
 export class RestClient {
 
@@ -8,7 +8,7 @@ export class RestClient {
   storeId: string;
   apiVersion: string;
   oAuth?: OAuth;
-  token: Token | string;
+  token: ITokenPair | string;
 
   constructor(options: IRestClientOptions) {
     this.serverUrl = options.url;
@@ -39,7 +39,7 @@ export class RestClient {
 
   private getHeaders(requestData: ApiCallRequestData): AuthorizationHeader {
     if (this.oAuth) {
-      return this.oAuth.toHeader(this.oAuth.authorize(requestData, this.token as Token));
+      return this.oAuth.toHeader(this.oAuth.authorize(requestData, this.token as ITokenPair));
     }
     return new AuthorizationHeader(this.token as string);
   }

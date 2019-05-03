@@ -1,7 +1,7 @@
 /**
  * OAuth token key/secret pair.
  */
-export interface Token {
+export interface ITokenPair {
   key: string;
   secret: string;
 }

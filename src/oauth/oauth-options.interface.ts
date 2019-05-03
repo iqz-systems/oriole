@@ -1,9 +1,9 @@
-import { Consumer } from './consumer.interface';
+import { ITokenPair } from './token-pair.interface';
 
 /**
  * OAuth options.
  */
-export interface Options {
+export interface IOAuthOptions {
   /**
    * Method used to generate the body hash.
    *
@@ -11,7 +11,7 @@ export interface Options {
    * but typically it should return SHA1 hash of base_string.
    */
   bodyHashFunction?: (base_string: string, key: string) => string;
-  consumer: Consumer;
+  consumer: ITokenPair;
   /**
    * Method used to hash the the OAuth and form/querystring data.
    */

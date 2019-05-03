@@ -1,10 +1,8 @@
-export { Authorization } from './authorization.interface';
 export { AuthorizationHeader } from './authorization-header';
-export { Consumer } from './consumer.interface';
-export { Data } from './data.interface';
-export { Header } from './header.interface';
+export { IOAuthData } from './oauth-data.interface';
+export { IOAuthOptions } from './oauth-options.interface';
+export { IParamMap } from './param-map.interface';
+export { IRequestOptions } from './request-options.interface';
+export { ISignedOAuthData } from './signed-oauth-data.interface';
+export { ITokenPair } from './token-pair.interface';
 export { OAuth } from './oauth';
-export { Options } from './options.interface';
-export { ParamMap } from './param-map.interface';
-export { RequestOptions } from './request-options.interface';
-export { Token } from './token.interface';
