@@ -1,10 +1,10 @@
 export { Authorization } from './authorization.interface';
+export { AuthorizationHeader } from './authorization-header';
 export { Consumer } from './consumer.interface';
 export { Data } from './data.interface';
 export { Header } from './header.interface';
+export { OAuth } from './oauth';
 export { Options } from './options.interface';
-export { Param } from './param.interface';
+export { ParamMap } from './param-map.interface';
 export { RequestOptions } from './request-options.interface';
 export { Token } from './token.interface';
-export { OAuth } from './oauth';
-export { AuthorizationHeader } from './authorization-header';

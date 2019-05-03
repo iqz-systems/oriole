@@ -1,12 +1,14 @@
 import * as _ from 'lodash';
+import * as qs from 'querystring';
 import { Consumer } from './consumer.interface';
 import { Options } from './options.interface';
 import { RequestOptions } from './request-options.interface';
 import { Token } from './token.interface';
 import { Authorization } from './authorization.interface';
 import { Data } from './data.interface';
-import { Param } from './param.interface';
 import { AuthorizationHeader } from './authorization-header';
+import { Helpers } from './helpers';
+import { ParamMap } from './param-map.interface';
 
 export class OAuth {
   consumer: Consumer;
@@ -57,7 +59,7 @@ export class OAuth {
       oauth_consumer_key: this.consumer.key,
       oauth_nonce: this.getNonce(),
       oauth_signature_method: this.signatureMethod,
-      oauth_timestamp: this.getTimeStamp(),
+      oauth_timestamp: Helpers.getTimeStamp(),
       oauth_version: this.version
     };
 
@@ -117,8 +119,8 @@ export class OAuth {
    */
   private getBaseString(request: RequestOptions, oAuthData: Data): string {
     return request.method.toUpperCase()
-      + '&' + this.percentEncode(this.getBaseUrl(request.url))
-      + '&' + this.percentEncode(this.getParameterString(request, oAuthData));
+      + '&' + Helpers.percentEncode(Helpers.getBaseUrl(request.url))
+      + '&' + Helpers.percentEncode(this.getParameterString(request, oAuthData));
   }
 
   /**
@@ -134,13 +136,13 @@ export class OAuth {
   private getParameterString(request: RequestOptions, oAuthData: Data): string {
     let baseStringData: any;
     if (oAuthData.oauth_body_hash) {
-      baseStringData = this.sortObject(
+      baseStringData = Helpers.sortObject(
         this.percentEncodeData(
           _.merge(oAuthData, this.deParamUrl(request.url))
         )
       );
     } else {
-      baseStringData = this.sortObject(
+      baseStringData = Helpers.sortObject(
         this.percentEncodeData(
           _.merge(oAuthData, _.merge(request.data, this.deParamUrl(request.url)))
         )
@@ -188,56 +190,10 @@ export class OAuth {
     tokenSecret = tokenSecret || '';
 
     if (!this.lastAmpersand && !tokenSecret) {
-      return this.percentEncode(this.consumer.secret);
+      return Helpers.percentEncode(this.consumer.secret);
     }
 
-    return this.percentEncode(this.consumer.secret) + '&' + this.percentEncode(tokenSecret);
-  }
-
-  /**
-   * Return the the URL without its querystring.
-   * @method getBaseUrl
-   * @param  url        [description]
-   * @return            [description]
-   */
-  private getBaseUrl(url: string): string {
-    return url.split('?')[0];
-  }
-
-  /**
-   * Get data from String
-   * @method deParam
-   * @param  str     The input string
-   * @return         The de-paramed result.
-   */
-  private deParam(str: string): Param {
-    const arr = str.split('&');
-    let data: any = {};
-
-    for (let i = 0; i < arr.length; i++) {
-      let item = arr[i].split('=');
-
-      // '' value
-      item[1] = item[1] || '';
-
-      // check if the key already exists
-      // this can occur if the QS part of the url contains duplicate
-      // keys like this: ?formkey=formvalue1&formkey=formvalue2
-      if (data[item[0]]) {
-        // the key exists already
-        if (!Array.isArray(data[item[0]])) {
-          // replace the value with an array containing the already present value
-          data[item[0]] = [data[item[0]]];
-        }
-        // and add the new found value to it
-        data[item[0]].push(decodeURIComponent(item[1]));
-      } else {
-        // it doesn't exist, just put the found value in the data object
-        data[item[0]] = decodeURIComponent(item[1]);
-      }
-    }
-
-    return data;
+    return Helpers.percentEncode(this.consumer.secret) + '&' + Helpers.percentEncode(tokenSecret);
   }
 
   /**
@@ -246,30 +202,14 @@ export class OAuth {
    * @param  url        The input url.
    * @return            [description]
    */
-  private deParamUrl(url: string): Param {
+  private deParamUrl(url: string): ParamMap {
     const tmp = url.split('?');
 
     if (tmp.length === 1) {
       return {};
     }
 
-    return this.deParam(tmp[1]);
-  }
-
-  /**
-   * Percent encode string
-   * @method percentEncode
-   * @param  str           string to be encoded
-   * @return               percent encoded string
-   */
-  private percentEncode(str: string): string {
-    const result = encodeURIComponent(str)
-      .replace(/\!/g, "%21")
-      .replace(/\*/g, "%2A")
-      .replace(/\'/g, "%27")
-      .replace(/\(/g, "%28")
-      .replace(/\)/g, "%29");
-    return result;
+    return qs.parse(tmp[1]);
   }
 
   /**
@@ -288,13 +228,13 @@ export class OAuth {
         let newValue: string[] = [];
         // percentEncode every value
         for (let val of value) {
-          newValue.push(this.percentEncode(val));
+          newValue.push(Helpers.percentEncode(val));
         }
         value = newValue;
       } else {
-        value = this.percentEncode(value as string);
+        value = Helpers.percentEncode(value as string);
       }
-      result[this.percentEncode(key)] = value;
+      result[Helpers.percentEncode(key)] = value;
     }
 
     return result;
@@ -313,7 +253,7 @@ export class OAuth {
    * @return           An Authorization header object of the current oAuth data.
    */
   toHeader(oAuthData: Authorization): AuthorizationHeader {
-    const sorted = this.sortObject(oAuthData);
+    const sorted = Helpers.sortObject(oAuthData);
 
     let headerValue = 'OAuth ';
 
@@ -325,7 +265,7 @@ export class OAuth {
       if ((sorted[i].key as string).indexOf('oauth_') !== 0)
         continue;
 
-      headerValue += this.percentEncode(sorted[i].key as string) + '="' + this.percentEncode(sorted[i].value as string) + '"' + this.parameterSeparator;
+      headerValue += Helpers.percentEncode(sorted[i].key as string) + '="' + Helpers.percentEncode(sorted[i].value as string) + '"' + this.parameterSeparator;
     }
 
     return new AuthorizationHeader(headerValue.substr(0, headerValue.length - this.parameterSeparator.length)); // cut the last chars
@@ -347,37 +287,4 @@ export class OAuth {
 
     return result;
   }
-
-  /**
-   * Get Current Unix TimeStamp
-   * @method getTimeStamp
-   * @return current unix timestamp
-   */
-  private getTimeStamp(): number {
-    return parseInt((new Date().getTime() / 1000) + '', 10);
-  }
-
-  /**
-   * Sort object by key
-   * @method sortObject
-   * @param  data       object to be sorted
-   * @return            sorted result
-   */
-  private sortObject<O extends { [k: string]: any }, K extends string>(data: O): Array<{ key: keyof O, value: O[K] }> {
-    let keys = Object.keys(data);
-    let result = [];
-
-    keys.sort();
-
-    for (let i = 0; i < keys.length; i++) {
-      let key = keys[i];
-      result.push({
-        key: key,
-        value: data[key],
-      });
-    }
-
-    return result;
-  }
-
 }
