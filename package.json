@@ -1,6 +1,6 @@
 {
   "name": "@iqz/oriole",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A NodeJS REST client for Magento 2 with full Typescript support.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -27,7 +27,7 @@
   "homepage": "https://github.com/iqz-systems/oriole#readme",
   "devDependencies": {
     "@types/lodash": "^4.14.123",
-    "@types/node": "^11.13.8",
+    "@types/node": "^11.13.10",
     "rimraf": "^2.6.3",
     "typescript": "^3.4.5"
   },
