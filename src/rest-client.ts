@@ -54,7 +54,6 @@ export class RestClient {
       return result.data;
     } catch (error) {
       if (error instanceof String) {
-        console.error('Error occured: ' + error);
         throw error;
       }
       const axError = error as AxiosError;
@@ -62,8 +61,14 @@ export class RestClient {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         if (!this.isHttpCallSucceeded(axError.response)) {
-          const errorMessage = this.errorString(axError.response.data.message, axError.response.data.parameters);
-          throw errorMessage;
+          if (axError.response.data.message) {
+            const errorMessage = this.errorString(axError.response.data.message, axError.response.data.parameters);
+            throw errorMessage;
+          } else if (axError.response.data.messages) {
+            throw axError.response.data.messages.error;
+          } else {
+            throw axError;
+          }
         }
         throw axError.response.data;
       }
