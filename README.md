@@ -34,6 +34,12 @@ const o = new Oriole({
 console.log(await o.products.list('carrot'));   // Gets you a list of all products searchable by 'carrot'
 ```
 
+## Changelog
+
+The changelog is available [here][changelog].
+
+[changelog]: ./CHANGELOG.md
+
 [m-nouvak]: https://github.com/nouvak
 
 [ddo]: https://github.com/ddo
