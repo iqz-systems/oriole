@@ -1,5 +1,9 @@
 # Changelog
 
+#### 0.4.1
+
+-   Exported models of product module.
+
 ### 0.4.0
 
 -   Added convenience methods to models.
