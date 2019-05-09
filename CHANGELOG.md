@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.4.0
+
+-   Renamed `ProductAttributePropertyOption`, `ProductAttributeProperties` and `ProductAttribute` to `ProductAttributeOption`, `ProductAttributes` and `Product` respectively. It now makes more sense and avoids confusing names.
+
 #### 0.3.1
 
 -   Reverted 'Made all properties of `ProductAttribute` optional.'
