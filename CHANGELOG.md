@@ -1,5 +1,9 @@
 # Changelog
 
+#### 0.3.1
+
+-   Reverted 'Made all properties of `ProductAttribute` optional.'
+
 ### 0.3.0
 
 -   Made all properties of `ProductAttribute` optional.
