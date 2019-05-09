@@ -31,14 +31,14 @@ export class CategoryListResult {
    * @return                            An array containing all CategoryResultItems in one level.
    */
   static flattenCategoryListResults(results: CategoryListResult[]): CategoryListResult[] {
-    let resultsCopy = _.map(results, _.clone);
+    let resultsCopy = _.map(results, _.cloneDeep);
 
     let flattenedResults: CategoryListResult[] = [];
 
-    flattenedResults.concat(resultsCopy);
+    flattenedResults = flattenedResults.concat(resultsCopy);
     for (let result of resultsCopy) {
       if (result.hasChildren) {
-        flattenedResults.concat(CategoryListResult.flattenCategoryListResults(result.children_data));
+        flattenedResults = flattenedResults.concat(CategoryListResult.flattenCategoryListResults(result.children_data));
       }
     }
 

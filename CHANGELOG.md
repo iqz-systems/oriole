@@ -1,5 +1,9 @@
 # Changelog
 
+#### 0.4.2
+
+-   Fixed bug in `CategoryListResult.flattenCategoryListResults()` which caused it to return empty array always.
+
 #### 0.4.1
 
 -   Exported models of product module.
