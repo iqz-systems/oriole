@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
-import { ProductCustomAttribute } from './product-custom-attribute';
+import { CustomAttribute } from '../../common-models';
 
-export class ProductAttribute {
+export class Product {
 
   id: number = 0;
   sku: string = '';
@@ -21,6 +21,6 @@ export class ProductAttribute {
   product_links: any[] = [];
   tier_prices: any[] = [];
 
-  @Type(() => ProductCustomAttribute)
-  custom_attributes: ProductCustomAttribute[] = [];
+  @Type(() => CustomAttribute)
+  custom_attributes: CustomAttribute[] = [];
 }

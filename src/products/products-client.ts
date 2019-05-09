@@ -1,9 +1,9 @@
 import * as util from 'util';
 import { RestClient } from '../rest-client';
 import { plainToClass } from 'class-transformer';
-import { ProductAttribute } from './product-attribute';
 import { ListResult, SearchCriteria } from '../common-models';
 import { ClientBase } from '../client-base';
+import { Product } from './models';
 
 export class ProductsClient extends ClientBase {
 
@@ -18,12 +18,12 @@ export class ProductsClient extends ClientBase {
    * @param  currentPage The current page of the "pages" of result. Use in conjunction with pageSize.
    * @return             A list of products.
    */
-  async list(pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<ProductAttribute>> {
+  async list(pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<Product>> {
     const query = `searchCriteria[pageSize]=${pageSize}&searchCriteria[currentPage]=${currentPage}`;
     const endpointUrl = util.format('/products?%s', query);
     try {
       const result = await this.restClient.get(endpointUrl);
-      return new ListResult<ProductAttribute>(result, plainToClass(ProductAttribute, result.items as ProductAttribute[]));
+      return new ListResult<Product>(result, plainToClass(Product, result.items as Product[]));
     } catch (error) {
       throw error;
     }
@@ -37,13 +37,13 @@ export class ProductsClient extends ClientBase {
    * @param  currentPage    The current page of the "pages" of result. Use in conjunction with pageSize.
    * @return                A list of products based on search criteria.
    */
-  async search(searchCriteria: SearchCriteria, pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<ProductAttribute>> {
+  async search(searchCriteria: SearchCriteria, pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<Product>> {
     const query = `searchCriteria[pageSize]=${pageSize}&searchCriteria[currentPage]=${currentPage}`
       + `&${searchCriteria.toString()}`;
     const endpointUrl = util.format('/products?%s', query);
     try {
       const result = await this.restClient.get(endpointUrl);
-      return new ListResult<ProductAttribute>(result, plainToClass(ProductAttribute, result.items as ProductAttribute[]));
+      return new ListResult<Product>(result, plainToClass(Product, result.items as Product[]));
     } catch (error) {
       throw error;
     }

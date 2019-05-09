@@ -3,30 +3,30 @@ import { plainToClass } from 'class-transformer';
 import { ClientBase } from '../client-base';
 import { RestClient } from '../rest-client';
 import { ListResult } from '../common-models';
-import { ProductAttributeProperties } from './product-attribute-properties';
+import { ProductAttributes } from './models';
 
-export class ProductAttributePropertiesClient extends ClientBase {
+export class ProductAttributesClient extends ClientBase {
 
   constructor(restClient: RestClient) {
     super(restClient);
   }
 
-  async list(searchCriteria: string): Promise<ListResult<ProductAttributeProperties>> {
+  async list(searchCriteria: string): Promise<ListResult<ProductAttributes>> {
     const query = 'searchCriteria=' + searchCriteria;
     const endpointUrl = util.format('/products/attributes?%s', query);
     try {
       const result = await this.restClient.get(endpointUrl);
-      return new ListResult<ProductAttributeProperties>(result, plainToClass(ProductAttributeProperties, result.items as ProductAttributeProperties[]));
+      return new ListResult<ProductAttributes>(result, plainToClass(ProductAttributes, result.items as ProductAttributes[]));
     } catch (error) {
       throw error;
     }
   }
 
-  async get(attributeCode: string): Promise<ProductAttributeProperties> {
+  async get(attributeCode: string): Promise<ProductAttributes> {
     const endpointUrl = util.format('/products/attributes/%s', attributeCode);
     try {
       const result = await this.restClient.get(endpointUrl);
-      return plainToClass(ProductAttributeProperties, result as ProductAttributeProperties);
+      return plainToClass(ProductAttributes, result as ProductAttributes);
     } catch (error) {
       throw error;
     }

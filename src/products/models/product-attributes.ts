@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
-import { ProductAttributePropertyOption } from './product-attribute-property-option';
+import { ProductAttributeOption } from './product-attribute-option';
 
-export class ProductAttributeProperties {
+export class ProductAttributes {
   apply_to: string[] = [];
   attribute_code: string = '';
   attribute_id: number = 0;
@@ -31,8 +31,8 @@ export class ProductAttributeProperties {
   is_wysiwyg_enabled: boolean = false;
   note?: string;
 
-  @Type(() => ProductAttributePropertyOption)
-  options: ProductAttributePropertyOption[] = [];
+  @Type(() => ProductAttributeOption)
+  options: ProductAttributeOption[] = [];
 
   position: number = 0;
   scope: 'global' | 'store' = 'store';
