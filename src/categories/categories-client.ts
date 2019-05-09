@@ -1,8 +1,8 @@
 import * as util from 'util';
 import { plainToClass } from 'class-transformer';
 import { RestClient } from '../rest-client';
-import { CategoryAttribute } from './category-attribute';
 import { ClientBase } from '../client-base';
+import { CategoryListResult, Category } from './models';
 
 export class CategoriesClient extends ClientBase {
 
@@ -10,10 +10,19 @@ export class CategoriesClient extends ClientBase {
     super(restClient);
   }
 
-  async list(): Promise<CategoryAttribute | CategoryAttribute[]> {
+  async list(): Promise<CategoryListResult | CategoryListResult[]> {
     try {
       const result = await this.restClient.get('/categories');
-      return plainToClass(CategoryAttribute, result as CategoryAttribute);
+      return plainToClass(CategoryListResult, result as CategoryListResult);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async get(categoryId: number): Promise<Category> {
+    try {
+      const result = await this.restClient.get(`/categories/${categoryId}`);
+      return plainToClass(Category, result as Category);
     } catch (error) {
       throw error;
     }

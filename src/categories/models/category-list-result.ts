@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 
-export class CategoryAttribute {
+export class CategoryListResult {
   id: number = 0;
   parent_id: number = 0;
   name: string = '';
@@ -9,6 +9,6 @@ export class CategoryAttribute {
   level: number = 0;
   product_count: number = 0;
 
-  @Type(() => CategoryAttribute)
-  children_data: CategoryAttribute[] = [];
+  @Type(() => CategoryListResult)
+  children_data: CategoryListResult[] = [];
 }
