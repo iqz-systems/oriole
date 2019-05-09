@@ -21,7 +21,7 @@ export class Category {
   /**
    * Shortbut to get the category description from custom_attributes array.
    * @method description
-   * @return The category description as HTML text.
+   * @return The category description as HTML text. Empty string, if not available.
    */
   @Expose() get description(): string {
     if (!this.custom_attributes || (this.custom_attributes.length < 1)) {
@@ -36,8 +36,8 @@ export class Category {
 
   /**
    * Shortcut to get the category image name from the custom_attributes array.
-   * @method Expose
-   * @return [description]
+   * @method image
+   * @return The category image name. Empty string, if not available.
    */
   @Expose() get image(): string {
     if (!this.custom_attributes || (this.custom_attributes.length < 1)) {
@@ -52,8 +52,8 @@ export class Category {
 
   /**
    * Shortcut to get the category image url from the custom_attributes array.
-   * @method Expose
-   * @return [description]
+   * @method imageUrl
+   * @return The category image url. Empty string, if not available.
    */
   @Expose() get imageUrl(): string {
     if (this.image == '') {
