@@ -1,5 +1,7 @@
 # Oriole
 
+![npm (scoped)](https://img.shields.io/npm/v/@iqz/oriole.svg) ![GitHub](https://img.shields.io/github/license/iqz-systems/oriole.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/iqz-systems/oriole.svg)
+
 ![oriole-logo][logo]
 
 A NodeJS REST client for Magento 2 with full Typescript support.
