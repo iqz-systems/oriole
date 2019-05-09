@@ -19,7 +19,7 @@ export class Category {
   custom_attributes: CustomAttribute[] = [];
 
   /**
-   * Gets the category description.
+   * Shortbut to get the category description from custom_attributes array.
    * @method description
    * @return The category description as HTML text.
    */
@@ -32,5 +32,34 @@ export class Category {
       return '';
     }
     return descriptionAttr.value as string;
+  }
+
+  /**
+   * Shortcut to get the category image name from the custom_attributes array.
+   * @method Expose
+   * @return [description]
+   */
+  @Expose() get image(): string {
+    if (!this.custom_attributes || (this.custom_attributes.length < 1)) {
+      return '';
+    }
+    const imageAttr = this.custom_attributes.find(attr => attr.attribute_code == 'image');
+    if (!imageAttr) {
+      return '';
+    }
+    return imageAttr.value as string;
+  }
+
+  /**
+   * Shortcut to get the category image url from the custom_attributes array.
+   * @method Expose
+   * @return [description]
+   */
+  @Expose() get imageUrl(): string {
+    if (this.image == '') {
+      return '';
+    }
+
+    return `/media/catalog/category/${this.image}`;
   }
 }
