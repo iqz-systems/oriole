@@ -2,7 +2,9 @@
 
 ### 0.4.0
 
+-   Added convenience methods to models.
 -   Renamed `ProductAttributePropertyOption`, `ProductAttributeProperties` and `ProductAttribute` to `ProductAttributeOption`, `ProductAttributes` and `Product` respectively. It now makes more sense and avoids confusing names.
+-   Renamed `CategoryAttribute` to `CategoryListResult` and added `Category` model.
 
 #### 0.3.1
 
