@@ -4,6 +4,7 @@ import { plainToClass } from 'class-transformer';
 import { ListResult, SearchCriteria } from '../common-models';
 import { ClientBase } from '../client-base';
 import { Product } from './models';
+import { LinkProduct } from './models/link-product';
 
 export class ProductsClient extends ClientBase {
 
@@ -44,6 +45,63 @@ export class ProductsClient extends ClientBase {
     try {
       const result = await this.restClient.get(endpointUrl);
       return new ListResult<Product>(result, plainToClass(Product, result.items as Product[]));
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * list all related products in Magento store.
+   * @method list
+   * @param  productSku     Product SKU value
+   * @return                A list of related products.
+   */
+  async relatedProducts(productSku: string) {
+    return await this.listByLinkType('related',productSku);
+  }
+
+  /**
+   * list all crosssell products in Magento store.
+   * @method list
+   * @param  productSku     Product SKU value
+   * @return                A list of crosssell products.
+   */
+  async crosssellProducts(productSku: string) {
+    return await this.listByLinkType('crosssell',productSku);
+  }
+
+  /**
+   * list all upsell products in Magento store.
+   * @method list
+   * @param  productSku     Product SKU value
+   * @return                A list of related products.
+   */
+  async upsellProducts(productSku: string) {
+    return await this.listByLinkType('upsell',productSku);
+  }
+
+  /**
+   * list all associated products in Magento store.
+   * @method list
+   * @param  productSku     Product SKU value
+   * @return                A list of associated products.
+   */
+  async associatedProducts(productSku: string) {
+    return await this.listByLinkType('associated',productSku);
+  }
+
+  /**
+   * list all Link products in Magento store.
+   * @method list
+   * @param  linkType       Link Type [linkType, crosssell, upsell, associated]
+   * @param  productSku     Product SKU value
+   * @return                A list of Link products.
+   */
+  listByLinkType(linkType:String, productSku: string): Promise<ListResult<LinkProduct>> {
+    const query = `${productSku}/links/${linkType}`;
+    const endpointUrl = util.format('/products/%s', query);
+    try {
+      return this.restClient.get(endpointUrl);
     } catch (error) {
       throw error;
     }
