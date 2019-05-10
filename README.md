@@ -12,6 +12,10 @@ This module also uses a full Typescript rewrite of [Ddo][ddo]'s [oauth-1.0a][oau
 
 This is a **Work-in-Progress**. Only a subset of Magento's REST API is implemented. You can help by submitting a PR.
 
+## Why _'Oriole'_?
+
+We were building something else called as **Bluebird** when this one happened as a by-product. We wanted to have something similarly named. Magento's branding scheme is _orange_-ish (?) so we did a Google search for _"orange coloured birds"_ and an _"oriole"_ popped up in the results. Hence the name. :P
+
 ## Installation
 
 ```bash
@@ -19,6 +23,10 @@ npm install @iqz/oriole --save
 ```
 
 ## Usage
+
+You will need to either create an "integration" with Magento 2 or obtain a user token.
+
+To create an integration, you'll have to go to `System > Extensions > Integrations` and `Add New Integration` in the Magento 2 admin panel. Give a name and select the scope of the API and save it to obtain the OAuth keys. Then you can do:
 
 ```typescript
 import { Oriole } from '@iqz/oriole';
@@ -35,6 +43,8 @@ const o = new Oriole({
 
 console.log(await o.products.list('carrot'));   // Gets you a list of all products searchable by 'carrot'
 ```
+
+If you are using a user token, replace the `oauth` property above with `bearer` property.
 
 ## Changelog
 
