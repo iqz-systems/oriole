@@ -1,13 +1,8 @@
 import * as _ from 'lodash';
 import * as qs from 'querystring';
-import { IOAuthOptions } from './oauth-options.interface';
-import { IRequestOptions } from './request-options.interface';
 import { AuthorizationHeader } from './authorization-header';
 import { Helpers } from './helpers';
-import { IParamMap } from './param-map.interface';
-import { ITokenPair } from './token-pair.interface';
-import { IOAuthData } from './oauth-data.interface';
-import { ISignedOAuthData } from './signed-oauth-data.interface';
+import { ITokenPair, IOAuthOptions, IRequestOptions, IOAuthData, ISignedOAuthData, IParamMap } from './interfaces';
 
 export class OAuth {
   consumer: ITokenPair;
@@ -150,7 +145,7 @@ export class OAuth {
 
     let dataStr = '';
 
-    //baseStringData to string
+    // baseStringData to string
     for (let i = 0; i < baseStringData.length; i++) {
       let key = baseStringData[i].key;
       let value = baseStringData[i].value;
@@ -174,7 +169,7 @@ export class OAuth {
       }
     }
 
-    //remove the last character
+    // remove the last character
     dataStr = dataStr.substr(0, dataStr.length - 1);
     return dataStr;
   }
@@ -239,12 +234,6 @@ export class OAuth {
     return result;
   }
 
-  /**
-   * Get OAuth data as Header
-   * @method toHeader
-   * @param  oAuthData oAuthData
-   * @return           The header object
-   */
   /**
    * Get oAuth data as header
    * @method toHeader
