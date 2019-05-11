@@ -3,4 +3,4 @@ export { SearchCriteria } from './search-criteria';
 export { SearchFilterGroup } from './search-filter-group';
 export { SearchFilter } from './search-filter';
 export { CustomAttribute } from './custom-attribute';
-export { ExtensionAttributes } from './extension_attributes';
+export { ExtensionAttribute } from './extension_attributes';

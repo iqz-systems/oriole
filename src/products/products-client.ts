@@ -4,7 +4,7 @@ import { plainToClass } from 'class-transformer';
 import { ListResult, SearchCriteria } from '../common-models';
 import { ClientBase } from '../client-base';
 import { Product } from './models';
-import { LinkProduct } from './models/link-product';
+import { LinkedProduct, LinkType } from './models/link-product';
 
 export class ProductsClient extends ClientBase {
 
@@ -61,22 +61,22 @@ export class ProductsClient extends ClientBase {
   }
 
   /**
-   * list all crosssell products in Magento store.
+   * list all crossSell products in Magento store.
    * @method list
    * @param  productSku     Product SKU value
-   * @return                A list of crosssell products.
+   * @return                A list of crossSell products.
    */
-  async crosssellProducts(productSku: string) {
+  async crossSellProducts(productSku: string) {
     return await this.listByLinkType('crosssell',productSku);
   }
 
   /**
-   * list all upsell products in Magento store.
+   * list all upSell products in Magento store.
    * @method list
    * @param  productSku     Product SKU value
-   * @return                A list of related products.
+   * @return                A list of upSell products.
    */
-  async upsellProducts(productSku: string) {
+  async upSellProducts(productSku: string) {
     return await this.listByLinkType('upsell',productSku);
   }
 
@@ -97,7 +97,7 @@ export class ProductsClient extends ClientBase {
    * @param  productSku     Product SKU value
    * @return                A list of Link products.
    */
-  listByLinkType(linkType:String, productSku: string): Promise<ListResult<LinkProduct>> {
+  listByLinkType(linkType:LinkType, productSku: string): Promise<LinkedProduct> {
     const query = `${productSku}/links/${linkType}`;
     const endpointUrl = util.format('/products/%s', query);
     try {
