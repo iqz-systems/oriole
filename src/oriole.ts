@@ -3,6 +3,11 @@ import { ProductsClient, ProductAttributesClient } from './products';
 import { CategoriesClient } from './categories';
 import { IOrioleOptions } from './oriole-options.interface';
 
+/**
+ * Base Oriole module.
+ * @method constructor
+ * @param  options     Options to initialize the module.
+ */
 export class Oriole {
 
   static readonly MAGENTO_API_VERSION: string = 'V1';
