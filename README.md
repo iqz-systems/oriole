@@ -12,7 +12,7 @@ This module also uses a full Typescript rewrite of [Ddo][ddo]'s [oauth-1.0a][oau
 
 This is a **Work-in-Progress**. Only a subset of Magento's REST API is implemented. You can help by submitting a PR.
 
-## Why _'Oriole'_?
+## Why _"Oriole"_?
 
 We were building something else called as **Bluebird** when this one happened as a by-product. We wanted to have something similarly named. Magento's branding scheme is _orange_-ish (?) so we did a Google search for _"orange coloured birds"_ and an _"oriole"_ popped up in the results. Hence the name. :P
 
