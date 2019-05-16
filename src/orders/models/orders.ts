@@ -79,12 +79,17 @@ export class Orders {
 
   weight: number = 0;
 
+  @Type(() => Items)
   items: Items[] = [];
 
+  @Type(() => BillingAddress)
   billing_address: BillingAddress = new BillingAddress();
+
+  @Type(() => Payment)
   payment: Payment = new Payment(); 
 
-  status_histories: String[] = [];
+  status_histories: string[] = [];
 
+  @Type(() => ShippingAssignments)
   extension_attributes: ShippingAssignments = new ShippingAssignments();
 }
