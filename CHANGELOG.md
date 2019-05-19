@@ -1,6 +1,11 @@
 # Changelog
 
-### 0.5.1
+#### 0.5.2
+
+-   Improved typing for `ListResult` model.
+-   Added searching for categories.
+
+#### 0.5.1
 
 -   Added `listByCategory(categoryId)` to products client.
 
