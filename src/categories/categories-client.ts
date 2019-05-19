@@ -3,6 +3,7 @@ import { plainToClass } from 'class-transformer';
 import { RestClient } from '../rest-client';
 import { ClientBase } from '../client-base';
 import { CategoryListResult, Category, CategoryProduct } from './models';
+import { SearchCriteria, SearchFilterGroup, ListResult } from '../common-models';
 
 export class CategoriesClient extends ClientBase {
 
@@ -34,6 +35,47 @@ export class CategoriesClient extends ClientBase {
     try {
       const result = await this.restClient.get(`/categories/${categoryId}`);
       return plainToClass(Category, result as Category);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Gets complete information about a category identified by its name.
+   * @method getByName
+   * @param  categoryName The name of the category.
+   * @return              A Category object with the complete info about a category.
+   */
+  async getByName(categoryName: string): Promise<Category> {
+    const searchCriteria = new SearchCriteria();
+    const filterGroup = new SearchFilterGroup();
+    filterGroup.addSearchFilter('name', categoryName, 'eq');
+    searchCriteria.addSearchFilterGroup(filterGroup);
+    const query = `${searchCriteria.toString()}`;
+    const endpointUrl = util.format('/categories/list?%s', query);
+    try {
+      const result = await this.restClient.get(endpointUrl);
+      return plainToClass(Category, result.items as Category[])[0];
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Searches for categories based on the given search criteria.
+   * @method search
+   * @param  searchCriteria Search criteria describing what you need to search.
+   * @param  pageSize       The number of results to be fetched in one "page" of API response. Default is 9999.
+   * @param  currentPage    The current page of the "pages" of result. Use in conjunction with pageSize.
+   * @return                A list of categories matching the criteria.
+   */
+  async search(searchCriteria: SearchCriteria, pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<Category>> {
+    const query = `searchCriteria[pageSize]=${pageSize}&searchCriteria[currentPage]=${currentPage}`
+      + `&${searchCriteria.toString()}`;
+    const endpointUrl = util.format('/categories/list?%s', query);
+    try {
+      const result = await this.restClient.get(endpointUrl);
+      return new ListResult<Category>(result, plainToClass(Category, result.items as Category[]));
     } catch (error) {
       throw error;
     }
