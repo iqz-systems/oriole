@@ -1,5 +1,9 @@
 # Changelog
 
+#### 0.5.3
+
+-   Added product fetching by SKU.
+
 #### 0.5.2
 
 -   Improved typing for `ListResult` model.

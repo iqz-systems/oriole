@@ -77,6 +77,22 @@ export class ProductsClient extends ClientBase {
     }
   }
 
+  /**
+   * Get a product based on its sku.
+   * @method get
+   * @param  sku The SKU of the product.
+   * @return     A Product object describing the product.
+   */
+  async get(sku: string): Promise<Product> {
+    try {
+      sku = encodeURIComponent(sku);
+      const result = await this.restClient.get(`/products/${sku}`);
+      return plainToClass(Product, result as Product);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async create(productAttributes: object): Promise<any> {
     return await this.restClient.post('/products', productAttributes);
   }
