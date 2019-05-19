@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.5.1
+
+-   Added `listByCategory(categoryId)` to products client.
+
 ### 0.5.0
 
 -   Added `getProducts(categoryId)` to categories client.
