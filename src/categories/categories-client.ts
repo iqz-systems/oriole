@@ -2,7 +2,7 @@ import * as util from 'util';
 import { plainToClass } from 'class-transformer';
 import { RestClient } from '../rest-client';
 import { ClientBase } from '../client-base';
-import { CategoryListResult, Category } from './models';
+import { CategoryListResult, Category, CategoryProduct } from './models';
 
 export class CategoriesClient extends ClientBase {
 
@@ -10,6 +10,11 @@ export class CategoriesClient extends ClientBase {
     super(restClient);
   }
 
+  /**
+   * Gets a list of all categories with a minimal information set.
+   * @method list
+   * @return An array (or single item) of categories.
+   */
   async list(): Promise<CategoryListResult | CategoryListResult[]> {
     try {
       const result = await this.restClient.get('/categories');
@@ -19,10 +24,31 @@ export class CategoriesClient extends ClientBase {
     }
   }
 
+  /**
+   * Gets complete information about a category identified by its id.
+   * @method get
+   * @param  categoryId The id of the category to fetch the info about.
+   * @return            A Category object with the complete info about a category.
+   */
   async get(categoryId: number): Promise<Category> {
     try {
       const result = await this.restClient.get(`/categories/${categoryId}`);
       return plainToClass(Category, result as Category);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Returns a list of all product SKUs in a given category.
+   * @method getProducts
+   * @param  categoryId  The category ID of which the products should be fetched.
+   * @return             A list of product SKUs associated with the category.
+   */
+  async getProducts(categoryId: number): Promise<CategoryProduct[]> {
+    try {
+      const result = await this.restClient.get(`/categories/${categoryId}/products`);
+      return plainToClass(CategoryProduct, result as CategoryProduct[]);
     } catch (error) {
       throw error;
     }
