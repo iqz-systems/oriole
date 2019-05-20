@@ -24,6 +24,8 @@ export class Product {
   @Type(() => CustomAttribute)
   custom_attributes: CustomAttribute[] = [];
 
+  // TODO Add extension attribute typings here.
+
   /**
    * Shortcut to get the product image url from the custom_attributes array.
    * @method image
