@@ -1,6 +1,6 @@
 # Changelog
 
-### 0.6.1
+#### 0.6.1
 
 -   Added missing `ExtensionAttributes` and helper methods for stock querying.
 
