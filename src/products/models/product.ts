@@ -1,5 +1,6 @@
 import { Type, Expose } from 'class-transformer';
-import { CustomAttribute } from '../../common-models';
+import { CustomAttribute, MediaGalleryEntry } from '../../common-models';
+import { ExtensionAttributes } from './extension-attributes';
 
 export class Product {
 
@@ -20,11 +21,52 @@ export class Product {
 
   product_links: any[] = [];
   tier_prices: any[] = [];
+  options: any[] = [];
 
   @Type(() => CustomAttribute)
   custom_attributes: CustomAttribute[] = [];
 
-  // TODO Add extension attribute typings here.
+  @Type(() => ExtensionAttributes)
+  extension_attributes: ExtensionAttributes = new ExtensionAttributes();
+
+  @Type(() => MediaGalleryEntry)
+  media_gallery_entries: MediaGalleryEntry[] = [];
+
+  /**
+   * Shortcut to get the stock status of the product from custom attributes.
+   * @method isInStock
+   * @return Returns `true` if the item is in stock; `false` if it's not or cannot be determined.
+   */
+  @Expose() get isInStock(): boolean {
+    if (!this.custom_attributes || this.custom_attributes.length < 1) {
+      return false;
+    }
+
+    const stockAttr = this.custom_attributes.find(attr => attr.attribute_code == 'quantity_and_stock_status');
+    if (!stockAttr) {
+      return false;
+    }
+
+    return (stockAttr.value as [boolean, number])[0];
+  }
+
+  /**
+   * Shortcut to get the quantity of the product in stock from custom attribute.
+   * @method quantityInStock
+   * @return Returns a number indicating the quantity of product in stock. Returns, 0 in cases where it can't be determined.
+   */
+  @Expose() get quantityInStock(): number {
+    if (!this.custom_attributes || this.custom_attributes.length < 1) {
+      return 0;
+    }
+
+    const stockAttr = this.custom_attributes.find(attr => attr.attribute_code == 'quantity_and_stock_status');
+    if (!stockAttr) {
+      return 0;
+    }
+
+    return (stockAttr.value as [boolean, number])[1];
+  }
 
   /**
    * Shortcut to get the product image url from the custom_attributes array.

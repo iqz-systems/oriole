@@ -2,7 +2,7 @@ import { Type } from 'class-transformer';
 import { SearchCriteria } from './search-criteria';
 
 export class ListResult<T> implements IListResult<T>{
-  readonly items: T[] = [];
+  readonly items: T[];
 
   @Type(() => SearchCriteria)
   readonly search_criteria: SearchCriteria;
