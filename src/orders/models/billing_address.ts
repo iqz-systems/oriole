@@ -1,4 +1,3 @@
-
 export class BillingAddress {
   address_type: string = '';
   city: string = '';
@@ -14,5 +13,4 @@ export class BillingAddress {
   region_id: number = 0;
   street: string[] = [];
   telephone: number = 0;
-
 }

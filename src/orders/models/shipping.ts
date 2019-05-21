@@ -1,11 +1,13 @@
-import { BillingAddress } from "./billing_address";
-import { Total } from "./total";
-import { Type } from "class-transformer";
+import { Type } from 'class-transformer';
+import { BillingAddress } from './billing_address';
+import { Total } from './total';
 
-export class Shipping{
+export class Shipping {
+
   @Type(() => BillingAddress)
   address: BillingAddress = new BillingAddress();
   method: string = '';
+
   @Type(() => Total)
   total: Total = new Total();
 }

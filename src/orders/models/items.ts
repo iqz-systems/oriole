@@ -1,4 +1,4 @@
-import { Type } from "class-transformer";
+import { Type } from 'class-transformer';
 
 export class Items {
   amount_refunded: number = 0;
@@ -14,7 +14,7 @@ export class Items {
   base_row_total_incl_tax: number = 0;
   base_tax_amount: number = 0;
   base_tax_invoiced: number = 0;
-  
+
   @Type(() => Date)
   created_at: Date = new Date();
 

@@ -25,12 +25,12 @@ export class Orders {
   base_tax_canceled: number = 0;
   base_total_canceled: number = 0;
   billing_address_id: number = 0;
-  
+
   @Type(() => Date)
   created_at: Date = new Date();
 
   customer_email: string = '';
-  customer_firstname: string = '';  
+  customer_firstname: string = '';
   customer_group_id: number = 0;
   customer_gender: number = 0;
   customer_id: number = 0;
@@ -86,7 +86,7 @@ export class Orders {
   billing_address: BillingAddress = new BillingAddress();
 
   @Type(() => Payment)
-  payment: Payment = new Payment(); 
+  payment: Payment = new Payment();
 
   status_histories: string[] = [];
 

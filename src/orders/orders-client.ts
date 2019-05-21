@@ -10,7 +10,7 @@ export class OrdersClient extends ClientBase {
   constructor(restClient: RestClient) {
     super(restClient);
   }
-  
+
   /**
    * List all orders in Magento store.
    * @method list
@@ -31,11 +31,11 @@ export class OrdersClient extends ClientBase {
 
   /**
    * Get order details by orderId in Magento store.
-   * @method listByOrderId
+   * @method get
    * @param  orderId    The Id to be fetched from the order.
-   * @return             Order details.
+   * @return            Order details.
    */
-  async listByOrderId(orderId: number): Promise<Orders> {
+  async get(orderId: number): Promise<Orders> {
     const endpointUrl = util.format(`/orders/${orderId}`);
     try {
       const result = await this.restClient.get(endpointUrl);

@@ -1,5 +1,9 @@
 # Changelog
 
+### 0.6.0
+
+-   Added `orders` client. Now you can fetch order details.
+
 #### 0.5.3
 
 -   Added product fetching by SKU.

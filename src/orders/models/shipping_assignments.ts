@@ -1,6 +1,6 @@
-import { Items } from "./items";
-import { Shipping } from "./shipping";
-import { Type } from "class-transformer";
+import { Type } from 'class-transformer';
+import { Items } from './items';
+import { Shipping } from './shipping';
 
 export class ShippingAssignments {
   @Type(() => ListShippingAssignments)
@@ -8,8 +8,10 @@ export class ShippingAssignments {
 }
 
 export class ListShippingAssignments {
+
   @Type(() => Shipping)
   shipping: Shipping = new Shipping();
+
   @Type(() => Items)
   items: Items[] = [];
 }
