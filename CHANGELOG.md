@@ -1,5 +1,11 @@
 # Changelog
 
+### 0.7.0
+
+-   Added helper method for orders.
+-   Added methods to search orders.
+-   Added ability to query for linked products for a product.
+
 #### 0.6.1
 
 -   Added missing `ExtensionAttributes` and helper methods for stock querying.
