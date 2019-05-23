@@ -3,7 +3,7 @@ import { RestClient } from '../rest-client';
 import { plainToClass } from 'class-transformer';
 import { ListResult, SearchCriteria, SearchFilterGroup } from '../common-models';
 import { ClientBase } from '../client-base';
-import { Product } from './models';
+import { Product, ProductLink } from './models';
 
 export class ProductsClient extends ClientBase {
 
@@ -88,6 +88,23 @@ export class ProductsClient extends ClientBase {
       sku = encodeURIComponent(sku);
       const result = await this.restClient.get(`/products/${sku}`);
       return plainToClass(Product, result as Product);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   * Get the links specified for a given product.
+   * @method getLinks
+   * @param  sku      The product to fetch the links for.
+   * @param  linkType The link type. Can be: 'related', 'associated', 'upsell' or 'crosssell'
+   * @return          An array of links for the sku.
+   */
+  async getLinks(sku: string, linkType: 'related' | 'associated' | 'upsell' | 'crosssell'): Promise<ProductLink[]> {
+    try {
+      sku = encodeURIComponent(sku);
+      const result = await this.restClient.get(`/products/${sku}/links/${linkType}`);
+      return plainToClass(ProductLink, result as ProductLink[]);
     } catch (error) {
       throw error;
     }

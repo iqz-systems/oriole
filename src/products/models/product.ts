@@ -1,6 +1,7 @@
 import { Type, Expose } from 'class-transformer';
 import { CustomAttribute, MediaGalleryEntry } from '../../common-models';
 import { ExtensionAttributes } from './extension-attributes';
+import { ProductLink } from './product-link';
 
 export class Product {
 
@@ -19,7 +20,8 @@ export class Product {
   @Type(() => Date)
   updated_at: Date = new Date();
 
-  product_links: any[] = [];
+  @Type(() => Date)
+  product_links: ProductLink[] = [];
   tier_prices: any[] = [];
   options: any[] = [];
 
