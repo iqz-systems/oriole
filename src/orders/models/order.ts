@@ -1,10 +1,10 @@
 import { Type } from 'class-transformer';
-import { Items } from './items';
-import { BillingAddress } from './billing_address';
+import { Address } from './address';
 import { Payment } from './payment';
-import { ShippingAssignments } from './shipping_assignments';
+import { ShippingAssignments } from './shipping-assignments';
+import { Item } from './item';
 
-export class Orders {
+export class Order {
   base_currency_code: string = '';
   base_discount_amount: number = 0;
   base_grand_total: number = 0;
@@ -79,11 +79,11 @@ export class Orders {
 
   weight: number = 0;
 
-  @Type(() => Items)
-  items: Items[] = [];
+  @Type(() => Item)
+  items: Item[] = [];
 
-  @Type(() => BillingAddress)
-  billing_address: BillingAddress = new BillingAddress();
+  @Type(() => Address)
+  billing_address: Address = new Address();
 
   @Type(() => Payment)
   payment: Payment = new Payment();

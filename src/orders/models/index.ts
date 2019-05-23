@@ -1,7 +1,7 @@
-export { Orders } from './orders';
-export { Items } from './items';
-export { BillingAddress } from './billing_address';
+export { Order } from './order';
+export { Item } from './item';
+export { Address } from './address';
 export { Payment } from './payment';
-export { ShippingAssignments } from './shipping_assignments';
+export { ShippingAssignments } from './shipping-assignments';
 export { Shipping } from './shipping';
 export { Total } from './total';

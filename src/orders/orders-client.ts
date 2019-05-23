@@ -2,7 +2,7 @@ import { plainToClass } from 'class-transformer';
 import * as util from 'util';
 import { RestClient } from '../rest-client';
 import { ClientBase } from '../client-base';
-import { Orders } from './models';
+import { Order } from './models';
 import { ListResult, SearchCriteria, SearchFilterGroup } from '../common-models';
 
 export class OrdersClient extends ClientBase {
@@ -18,12 +18,12 @@ export class OrdersClient extends ClientBase {
    * @param  currentPage The current page of the "pages" of result. Use in conjunction with pageSize.
    * @return             A list of orders.
    */
-  async list(pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<Orders>> {
+  async list(pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<Order>> {
     const query = `searchCriteria[pageSize]=${pageSize}&searchCriteria[currentPage]=${currentPage}`;
     const endpointUrl = util.format('/orders?%s', query);
     try {
       const result = await this.restClient.get(endpointUrl);
-      return new ListResult<Orders>(result, plainToClass(Orders, result.items as Orders[]));
+      return new ListResult<Order>(result, plainToClass(Order, result.items as Order[]));
     } catch (error) {
       throw error;
     }
@@ -37,13 +37,13 @@ export class OrdersClient extends ClientBase {
    * @param  currentPage    The current page of the "pages" of result. Use in conjunction with pageSize.
    * @return                A list of orders.
    */
-  async search(searchCriteria: SearchCriteria, pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<Orders>> {
+  async search(searchCriteria: SearchCriteria, pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<Order>> {
     const query = `searchCriteria[pageSize]=${pageSize}&searchCriteria[currentPage]=${currentPage}`
       + `&${searchCriteria.toString()}`;
     const endpointUrl = util.format('/orders?%s', query);
     try {
       const result = await this.restClient.get(endpointUrl);
-      return new ListResult<Orders>(result, plainToClass(Orders, result.items as Orders[]));
+      return new ListResult<Order>(result, plainToClass(Order, result.items as Order[]));
     } catch (error) {
       throw error;
     }
@@ -58,7 +58,7 @@ export class OrdersClient extends ClientBase {
    * @param  currentPage    The current page of the "pages" of result. Use in conjunction with pageSize.
    * @return                A list of orders.
    */
-  async listByCustomer(customerId: number, pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<Orders>> {
+  async listByCustomer(customerId: number, pageSize: number = 9999, currentPage: number = 1): Promise<ListResult<Order>> {
     const searchCriteria = new SearchCriteria();
     const filterGroup = new SearchFilterGroup();
     filterGroup.addSearchFilter('customer_id', customerId, 'eq');
@@ -72,11 +72,11 @@ export class OrdersClient extends ClientBase {
    * @param  orderId    The Id to be fetched from the order.
    * @return            Order details.
    */
-  async get(orderId: number): Promise<Orders> {
+  async get(orderId: number): Promise<Order> {
     const endpointUrl = util.format(`/orders/${orderId}`);
     try {
       const result = await this.restClient.get(endpointUrl);
-      return plainToClass(Orders, result as Orders);
+      return plainToClass(Order, result as Order);
     } catch (error) {
       throw error;
     }

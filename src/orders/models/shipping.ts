@@ -1,11 +1,11 @@
 import { Type } from 'class-transformer';
-import { BillingAddress } from './billing_address';
+import { Address } from './address';
 import { Total } from './total';
 
 export class Shipping {
 
-  @Type(() => BillingAddress)
-  address: BillingAddress = new BillingAddress();
+  @Type(() => Address)
+  address: Address = new Address();
   method: string = '';
 
   @Type(() => Total)

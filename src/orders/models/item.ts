@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 
-export class Items {
+export class Item {
   amount_refunded: number = 0;
   base_amount_refunded: number = 0;
   base_discount_amount: number = 0;

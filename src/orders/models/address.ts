@@ -1,4 +1,4 @@
-export class BillingAddress {
+export class Address {
   address_type: string = '';
   city: string = '';
   country_id: string = '';

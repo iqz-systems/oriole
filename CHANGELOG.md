@@ -1,4 +1,8 @@
-# Changelog
+# Change log
+
+### 0.8.0 Breaking Changes
+
+-   Renamed models in orders module to be more consistent with the rest of the package.
 
 ### 0.7.0
 

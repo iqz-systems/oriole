@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { Items } from './items';
+import { Item } from './item';
 import { Shipping } from './shipping';
 
 export class ShippingAssignments {
@@ -12,6 +12,6 @@ export class ListShippingAssignments {
   @Type(() => Shipping)
   shipping: Shipping = new Shipping();
 
-  @Type(() => Items)
-  items: Items[] = [];
+  @Type(() => Item)
+  items: Item[] = [];
 }
