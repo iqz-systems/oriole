@@ -1,8 +1,8 @@
 import { Type } from 'class-transformer';
 import { Address } from './address';
 import { Payment } from './payment';
-import { ShippingAssignments } from './shipping-assignments';
 import { Item } from './item';
+import { OrderExtensionAttributes } from './order-extension-attributes';
 
 export class Order {
   base_currency_code: string = '';
@@ -90,8 +90,8 @@ export class Order {
 
   status_histories: string[] = [];
 
-  @Type(() => ShippingAssignments)
-  extension_attributes: ShippingAssignments = new ShippingAssignments();
+  @Type(() => OrderExtensionAttributes)
+  extension_attributes: OrderExtensionAttributes = new OrderExtensionAttributes();
 
   /**
    * Shortcut to return a subset of order details.

@@ -1,7 +1,7 @@
 import { Type, Expose } from 'class-transformer';
 import { CustomAttribute, MediaGalleryEntry } from '../../common-models';
-import { ExtensionAttributes } from './extension-attributes';
 import { ProductLink } from './product-link';
+import { ProductExtensionAttributes } from './product-extension-attributes';
 
 export class Product {
 
@@ -28,8 +28,8 @@ export class Product {
   @Type(() => CustomAttribute)
   custom_attributes: CustomAttribute[] = [];
 
-  @Type(() => ExtensionAttributes)
-  extension_attributes: ExtensionAttributes = new ExtensionAttributes();
+  @Type(() => ProductExtensionAttributes)
+  extension_attributes: ProductExtensionAttributes = new ProductExtensionAttributes();
 
   @Type(() => MediaGalleryEntry)
   media_gallery_entries: MediaGalleryEntry[] = [];

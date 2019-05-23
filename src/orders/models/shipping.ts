@@ -4,9 +4,10 @@ import { Total } from './total';
 
 export class Shipping {
 
+  method: string = '';
+
   @Type(() => Address)
   address: Address = new Address();
-  method: string = '';
 
   @Type(() => Total)
   total: Total = new Total();
