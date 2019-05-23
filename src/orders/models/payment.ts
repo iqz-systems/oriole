@@ -10,5 +10,4 @@ export class Payment {
   parent_id: number = 0;
   shipping_amount: number = 0;
   extension_attributes: string[] = [];
-
 }

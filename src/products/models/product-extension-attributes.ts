@@ -2,7 +2,7 @@ import { Type } from 'class-transformer';
 import { StockItem } from './stock-item';
 import { CategoryLink } from '../../common-models';
 
-export class ExtensionAttributes {
+export class ProductExtensionAttributes {
   website_ids: number[] = [];
 
   @Type(() => CategoryLink)
