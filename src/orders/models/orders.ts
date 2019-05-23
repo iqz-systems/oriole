@@ -92,4 +92,48 @@ export class Orders {
 
   @Type(() => ShippingAssignments)
   extension_attributes: ShippingAssignments = new ShippingAssignments();
+
+  /**
+   * Shortcut to return a subset of order details.
+   * @method simplifiedOrderDetails
+   * @return Returns a subset of the order details in a simplified form.
+   */
+  get simplifiedOrderDetails(): ISimplifiedOrderDetails {
+    const simpleOrderDet: ISimplifiedOrderDetails = {
+      customerFirstName: this.customer_firstname,
+      customerLastName: this.customer_lastname,
+      customerEmail: this.customer_email,
+      customerIsGuest: (this.customer_is_guest == 1) ? true : false,
+      customerId: this.customer_id,
+      totalDue: this.total_due,
+      totalItemCount: this.total_item_count,
+      baseSubtotalIncludingTax: this.base_subtotal_incl_tax,
+      baseShippingIncludingTax: this.base_shipping_incl_tax,
+      items: this.items.map(item => {
+        return {
+          name: item.name,
+          priceIncludingTax: item.price_incl_tax,
+          productId: item.product_id
+        };
+      })
+    };
+    return simpleOrderDet;
+  }
+}
+
+export interface ISimplifiedOrderDetails {
+  customerFirstName: string;
+  customerLastName: string;
+  customerEmail: string;
+  customerIsGuest: boolean;
+  customerId: number;
+  totalDue: number;
+  totalItemCount: number;
+  baseSubtotalIncludingTax: number;
+  baseShippingIncludingTax: number;
+  items: {
+    name: string;
+    priceIncludingTax: number;
+    productId: number;
+  }[];
 }
