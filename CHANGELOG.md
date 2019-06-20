@@ -1,6 +1,6 @@
 # Change log
 
-#### 0.8.2
+### 0.9.0
 
 -   Updated API to more reliably expose stock details in products.
 
