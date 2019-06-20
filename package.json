@@ -37,5 +37,9 @@
     "class-transformer": "^0.2.0",
     "lodash": "^4.17.11",
     "reflect-metadata": "^0.1.13"
+  },
+  "engines": {
+    "node": ">=10.16.0",
+    "npm": ">=6.9.0"
   }
 }
