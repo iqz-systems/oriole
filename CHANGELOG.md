@@ -1,5 +1,9 @@
 # Change log
 
+### 0.9.0
+
+-   Updated API to more reliably expose stock details in products.
+
 #### 0.8.1
 
 -   Renamed models in products module to be more consistent with the rest of the package.
