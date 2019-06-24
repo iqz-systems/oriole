@@ -7,15 +7,14 @@ export namespace Helpers {
    * @return            sorted and mapped result
    */
   export function sortObject<O extends { [k: string]: any }, K extends string>(data: O): Array<{ key: keyof O, value: O[K] }> {
-    let keys = Object.keys(data);
-    let result = [];
+    const keys = Object.keys(data);
+    const result = [];
 
     keys.sort();
 
-    for (let i = 0; i < keys.length; i++) {
-      let key = keys[i];
+    for (const key of keys) {
       result.push({
-        key: key,
+        key,
         value: data[key],
       });
     }
@@ -40,11 +39,11 @@ export namespace Helpers {
    */
   export function percentEncode(str: string): string {
     const result = encodeURIComponent(str)
-      .replace(/\!/g, "%21")
-      .replace(/\*/g, "%2A")
-      .replace(/\'/g, "%27")
-      .replace(/\(/g, "%28")
-      .replace(/\)/g, "%29");
+      .replace(/\!/g, '%21')
+      .replace(/\*/g, '%2A')
+      .replace(/\'/g, '%27')
+      .replace(/\(/g, '%28')
+      .replace(/\)/g, '%29');
     return result;
   }
 

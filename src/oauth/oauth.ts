@@ -147,8 +147,8 @@ export class OAuth {
 
     // baseStringData to string
     for (let i = 0; i < baseStringData.length; i++) {
-      let key = baseStringData[i].key;
-      let value = baseStringData[i].value;
+      const key = baseStringData[i].key;
+      const value = baseStringData[i].value;
       // check if the value is an array
       // this means that this key has multiple values
       if (value && Array.isArray(value)) {
@@ -213,15 +213,15 @@ export class OAuth {
    * @return                   percent encoded data
    */
   private percentEncodeData(data: IOAuthData): { [prop: string]: string | string[] } {
-    let result: { [prop: string]: string | string[] } = {};
+    const result: { [prop: string]: string | string[] } = {};
 
-    for (let key in data) {
+    for (const key in data) {
       let value = data[key];
       // check if the value is an array
       if (value && Array.isArray(value)) {
-        let newValue: string[] = [];
+        const newValue: string[] = [];
         // percentEncode every value
-        for (let val of value) {
+        for (const val of value) {
           newValue.push(Helpers.percentEncode(val));
         }
         value = newValue;
@@ -250,10 +250,16 @@ export class OAuth {
     }
 
     for (let i = 0; i < sorted.length; i++) {
-      if ((sorted[i].key as string).indexOf('oauth_') !== 0)
+      if ((sorted[i].key as string).indexOf('oauth_') !== 0) {
         continue;
+      }
 
-      headerValue += Helpers.percentEncode(sorted[i].key as string) + '="' + Helpers.percentEncode(sorted[i].value as string) + '"' + this.parameterSeparator;
+      headerValue += Helpers.percentEncode(
+        sorted[i].key as string)
+        + '="'
+        + Helpers.percentEncode(sorted[i].value as string)
+        + '"'
+        + this.parameterSeparator;
     }
 
     return new AuthorizationHeader(headerValue.substr(0, headerValue.length - this.parameterSeparator.length)); // cut the last chars
