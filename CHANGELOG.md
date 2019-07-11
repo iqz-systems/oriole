@@ -1,5 +1,9 @@
 # Change log
 
+#### 0.10.1
+
+-   Updated package versions.
+
 ### 0.10.0
 
 -   Added methods to fetch the customer token and admin token via API.
