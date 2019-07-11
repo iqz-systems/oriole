@@ -19,16 +19,16 @@ export class RestClient {
       this.oAuth = new OAuth({
         consumer: {
           key: options.oauth.consumerKey,
-          secret: options.oauth.consumerSecret
+          secret: options.oauth.consumerSecret,
         },
         signatureMethod: 'HMAC-SHA1',
         hashFunction: (baseString: string, key: string): string => {
           return crypto.createHmac('sha1', key).update(baseString).digest('base64');
-        }
+        },
       });
       this.token = {
         key: options.oauth.accessToken,
-        secret: options.oauth.accessTokenSecret
+        secret: options.oauth.accessTokenSecret,
       };
     } else if (options.bearer) {
       this.token = options.bearer.token;
@@ -49,7 +49,8 @@ export class RestClient {
       const result = await axios({
         url: requestData.url,
         method: requestData.method,
-        headers: this.getHeaders(requestData)
+        headers: this.getHeaders(requestData),
+        data: requestData.data,
       });
       return result.data;
     } catch (error) {
@@ -76,7 +77,7 @@ export class RestClient {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        throw axError.request
+        throw axError.request;
       }
       throw axError.message;
     }
@@ -87,35 +88,35 @@ export class RestClient {
   }
 
   async get(resourceUrl: string): Promise<any> {
-    const requestData = {
+    const requestData: ApiCallRequestData = {
       url: this.createUrl(resourceUrl),
-      method: 'GET'
+      method: 'GET',
     };
     return await this.apiCall(requestData);
   }
 
   async post(resourceUrl: string, data: object): Promise<any> {
-    const requestData = {
+    const requestData: ApiCallRequestData = {
       url: this.createUrl(resourceUrl),
       method: 'POST',
-      body: data
+      data,
     };
     return await this.apiCall(requestData);
   }
 
   async put(resourceUrl: string, data: object): Promise<any> {
-    const requestData = {
+    const requestData: ApiCallRequestData = {
       url: this.createUrl(resourceUrl),
       method: 'PUT',
-      body: data
+      data,
     };
     return await this.apiCall(requestData);
   }
 
   async delete(resourceUrl: string): Promise<any> {
-    const requestData = {
+    const requestData: ApiCallRequestData = {
       url: this.createUrl(resourceUrl),
-      method: 'DELETE'
+      method: 'DELETE',
     };
     return await this.apiCall(requestData);
   }
@@ -135,9 +136,11 @@ export class RestClient {
         message = message.replace(parameterPlaceholder, parameters[i]);
       }
     } else if (parameters instanceof Object) {
-      for (let key in parameters) {
-        const parameterPlaceholder = '%' + key;
-        message = message.replace(parameterPlaceholder, parameters[key]);
+      for (const key in parameters) {
+        if (parameters.hasOwnProperty('key')) {
+          const parameterPlaceholder = '%' + key;
+          message = message.replace(parameterPlaceholder, parameters[key]);
+        }
       }
     }
 
@@ -164,8 +167,8 @@ export interface IRestClientOptions {
     consumerSecret: string;
     accessToken: string;
     accessTokenSecret: string;
-  },
+  };
   bearer?: {
     token: string;
-  }
+  };
 }

@@ -4,7 +4,6 @@
  * Make sure to update the credentials before doing so. :)
  */
 
-
 import 'reflect-metadata';
 
 import { Oriole } from './oriole';

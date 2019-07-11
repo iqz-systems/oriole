@@ -29,10 +29,10 @@ export class OAuth {
     }
     this.signatureMethod = opts.signatureMethod || 'PLAINTEXT';
 
-    if (this.signatureMethod == 'PLAINTEXT' && !opts.hashFunction) {
+    if (this.signatureMethod === 'PLAINTEXT' && !opts.hashFunction) {
       opts.hashFunction = (_baseString: string, key: string): string => {
         return key;
-      }
+      };
     }
     if (!opts.hashFunction) {
       throw new Error('hashFunction option is required');
@@ -54,7 +54,7 @@ export class OAuth {
       oauth_nonce: this.getNonce(),
       oauth_signature_method: this.signatureMethod,
       oauth_timestamp: Helpers.getTimeStamp(),
-      oauth_version: this.version
+      oauth_version: this.version,
     };
 
     if (token.key !== undefined) {
@@ -96,7 +96,7 @@ export class OAuth {
    * @return              The body hash
    */
   private getBodyHash(request: IRequestOptions, tokenSecret: string | undefined): string {
-    const body = (typeof request.data == 'string') ? request.data : JSON.stringify(request.data);
+    const body = (typeof request.data === 'string') ? request.data : JSON.stringify(request.data);
 
     if (!this.bodyHashFunction) {
       throw new Error('bodyHashFunction option is required');
@@ -132,35 +132,35 @@ export class OAuth {
     if (oAuthData.oauth_body_hash) {
       baseStringData = Helpers.sortObject(
         this.percentEncodeData(
-          _.merge(oAuthData, this.deParamUrl(request.url))
-        )
+          _.merge(oAuthData, this.deParamUrl(request.url)),
+        ),
       );
     } else {
       baseStringData = Helpers.sortObject(
         this.percentEncodeData(
-          _.merge(oAuthData, _.merge(request.data, this.deParamUrl(request.url)))
-        )
+          _.merge(oAuthData, _.merge(request.data, this.deParamUrl(request.url))),
+        ),
       );
     }
 
     let dataStr = '';
 
     // baseStringData to string
-    for (let i = 0; i < baseStringData.length; i++) {
-      let key = baseStringData[i].key;
-      let value = baseStringData[i].value;
+    for (const bs of baseStringData) {
+      const key = bs.key;
+      const value = bs.value;
       // check if the value is an array
       // this means that this key has multiple values
       if (value && Array.isArray(value)) {
         // sort the array first
         value.sort();
 
-        let valString = "";
+        let valString = '';
         // serialize all values for this key: e.g. formkey=formvalue1&formkey=formvalue2
         value.forEach(((item: any, i: number) => {
           valString += key + '=' + item;
           if (i < value.length) {
-            valString += "&";
+            valString += '&';
           }
         }));
         dataStr += valString;
@@ -213,15 +213,15 @@ export class OAuth {
    * @return                   percent encoded data
    */
   private percentEncodeData(data: IOAuthData): { [prop: string]: string | string[] } {
-    let result: { [prop: string]: string | string[] } = {};
+    const result: { [prop: string]: string | string[] } = {};
 
-    for (let key in data) {
+    for (const key of Object.keys(data)) {
       let value = data[key];
       // check if the value is an array
       if (value && Array.isArray(value)) {
-        let newValue: string[] = [];
+        const newValue: string[] = [];
         // percentEncode every value
-        for (let val of value) {
+        for (const val of value) {
           newValue.push(Helpers.percentEncode(val));
         }
         value = newValue;
@@ -249,11 +249,17 @@ export class OAuth {
       headerValue += 'realm="' + this.realm + '"' + this.parameterSeparator;
     }
 
-    for (let i = 0; i < sorted.length; i++) {
-      if ((sorted[i].key as string).indexOf('oauth_') !== 0)
+    for (const s of sorted) {
+      if ((s.key as string).indexOf('oauth_') !== 0) {
         continue;
+      }
 
-      headerValue += Helpers.percentEncode(sorted[i].key as string) + '="' + Helpers.percentEncode(sorted[i].value as string) + '"' + this.parameterSeparator;
+      headerValue += Helpers.percentEncode(
+        s.key as string)
+        + '="'
+        + Helpers.percentEncode(s.value as string)
+        + '"'
+        + this.parameterSeparator;
     }
 
     return new AuthorizationHeader(headerValue.substr(0, headerValue.length - this.parameterSeparator.length)); // cut the last chars
