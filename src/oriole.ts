@@ -3,6 +3,7 @@ import { ProductsClient, ProductAttributesClient } from './products';
 import { CategoriesClient } from './categories';
 import { IOrioleOptions } from './oriole-options.interface';
 import { OrdersClient } from './orders';
+import { IntegrationClient } from './integration';
 
 /**
  * Base Oriole module.
@@ -31,6 +32,7 @@ export class Oriole {
    * The client to interact with categories in Magento 2 store.
    */
   orders: OrdersClient;
+  integration: IntegrationClient;
 
   constructor(options: IOrioleOptions) {
     this.client = new RestClient({
@@ -38,12 +40,13 @@ export class Oriole {
       apiVersion: Oriole.MAGENTO_API_VERSION,
       storeId: options.storeId ? options.storeId : 'default',
       oauth: options.oauth,
-      bearer: options.bearer
+      bearer: options.bearer,
     });
 
     this.products = new ProductsClient(this.client);
     this.productAttributes = new ProductAttributesClient(this.client);
     this.orders = new OrdersClient(this.client);
     this.categories = new CategoriesClient(this.client);
+    this.integration = new IntegrationClient(this.client);
   }
 }

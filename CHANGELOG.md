@@ -1,5 +1,9 @@
 # Change log
 
+### 0.10.0
+
+-   Added methods to fetch the customer token and admin token via API.
+
 ### 0.9.0
 
 -   Updated API to more reliably expose stock details in products.
