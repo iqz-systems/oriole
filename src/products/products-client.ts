@@ -22,7 +22,7 @@ export class ProductsClient extends ClientBase {
   async listByCategory(
     categoryId: string | number,
     pageSize: number = 9999,
-    currentPage: number = 1
+    currentPage: number = 1,
   ): Promise<ListResult<Product>> {
     const searchCriteria = new SearchCriteria();
     const filterGroup = new SearchFilterGroup();

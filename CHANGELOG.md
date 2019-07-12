@@ -1,5 +1,10 @@
 # Change log
 
+### 0.11.0
+
+-   Fixed bug in `RestClient` which prevented token based authentication from working correctly.
+-   Added functionality to get information about a currently signed in customer.
+
 #### 0.10.1
 
 -   Updated package versions.

@@ -103,7 +103,7 @@ export class Order {
       customerFirstName: this.customer_firstname,
       customerLastName: this.customer_lastname,
       customerEmail: this.customer_email,
-      customerIsGuest: (this.customer_is_guest == 1) ? true : false,
+      customerIsGuest: (this.customer_is_guest === 1) ? true : false,
       customerId: this.customer_id,
       totalDue: this.total_due,
       totalItemCount: this.total_item_count,
@@ -113,9 +113,9 @@ export class Order {
         return {
           name: item.name,
           priceIncludingTax: item.price_incl_tax,
-          productId: item.product_id
+          productId: item.product_id,
         };
-      })
+      }),
     };
     return simpleOrderDet;
   }
@@ -131,9 +131,9 @@ export interface ISimplifiedOrderDetails {
   totalItemCount: number;
   baseSubtotalIncludingTax: number;
   baseShippingIncludingTax: number;
-  items: {
+  items: Array<{
     name: string;
     priceIncludingTax: number;
     productId: number;
-  }[];
+  }>;
 }

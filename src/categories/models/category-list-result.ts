@@ -31,18 +31,18 @@ export class CategoryListResult {
    * @return                            An array containing all CategoryResultItems in one level.
    */
   static flattenCategoryListResults(results: CategoryListResult[]): CategoryListResult[] {
-    let resultsCopy = _.map(results, _.cloneDeep);
+    const resultsCopy = _.map(results, _.cloneDeep);
 
     let flattenedResults: CategoryListResult[] = [];
 
     flattenedResults = flattenedResults.concat(resultsCopy);
-    for (let result of resultsCopy) {
+    for (const result of resultsCopy) {
       if (result.hasChildren) {
         flattenedResults = flattenedResults.concat(CategoryListResult.flattenCategoryListResults(result.children_data));
       }
     }
 
-    for (let flat of flattenedResults) {
+    for (const flat of flattenedResults) {
       flat.children_data = [];
     }
 

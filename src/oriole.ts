@@ -32,6 +32,9 @@ export class Oriole {
    * The client to interact with categories in Magento 2 store.
    */
   orders: OrdersClient;
+  /**
+   * The client to interact with integrations in Magento 2 store.
+   */
   integration: IntegrationClient;
 
   constructor(options: IOrioleOptions) {

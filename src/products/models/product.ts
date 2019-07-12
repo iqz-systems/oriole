@@ -70,7 +70,7 @@ export class Product {
       return '';
     }
 
-    const imageAttr = this.custom_attributes.find(attr => attr.attribute_code == 'image');
+    const imageAttr = this.custom_attributes.find(attr => attr.attribute_code === 'image');
     if (!imageAttr) {
       return '';
     }
@@ -88,7 +88,7 @@ export class Product {
       return '';
     }
 
-    const descriptionAttr = this.custom_attributes.find(attr => attr.attribute_code == 'description');
+    const descriptionAttr = this.custom_attributes.find(attr => attr.attribute_code === 'description');
     if (!descriptionAttr) {
       return '';
     }
