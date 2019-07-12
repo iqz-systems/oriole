@@ -1,10 +1,24 @@
 import { ClientBase } from '../client-base';
 import { RestClient } from '../rest-client';
+import { Customer } from './models';
+import { plainToClass } from 'class-transformer';
 
 export class IntegrationClient extends ClientBase {
 
   constructor(restClient: RestClient) {
     super(restClient);
+  }
+
+  /**
+   * Returns the customer information. The request has to be made with a customer token.
+   */
+  async getCustomerInfo(): Promise<Customer> {
+    try {
+      const result = await this.restClient.get('/customers/me');
+      return plainToClass(Customer, result);
+    } catch (error) {
+      throw error;
+    }
   }
 
   /**
