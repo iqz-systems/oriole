@@ -41,7 +41,7 @@ export class RestClient {
     if (this.oAuth) {
       return this.oAuth.toHeader(this.oAuth.authorize(requestData, this.token as ITokenPair));
     }
-    return new AuthorizationHeader(this.token as string);
+    return new AuthorizationHeader(`Bearer ${this.token as string}`);
   }
 
   private async apiCall(requestData: ApiCallRequestData): Promise<any> {
