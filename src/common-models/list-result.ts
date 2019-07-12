@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { SearchCriteria } from './search-criteria';
 
-export class ListResult<T> implements IListResult<T>{
+export class ListResult<T> implements IListResult<T> {
   readonly items: T[];
 
   @Type(() => SearchCriteria)

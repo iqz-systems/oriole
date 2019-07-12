@@ -8,7 +8,8 @@
   },
   "linterOptions": {
     "exclude": [
-      "src/sample.ts"
+      "src/sample.ts",
+      "src/demo.example.ts"
     ]
   },
   "rules": {

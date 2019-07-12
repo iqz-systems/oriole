@@ -49,4 +49,6 @@ export class SearchFilter {
  * null      - Null
  * to        - The end of a range. Must be used with from
  */
-export type ConditionType = 'eq' | 'finset' | 'from' | 'gt' | 'gteq' | 'in' | 'like' | 'lt' | 'lteq' | 'moreq' | 'neq' | 'nfinset' | 'nin' | 'notnull' | 'null' | 'to';
+export type ConditionType = 'eq' | 'finset' | 'from' | 'gt' | 'gteq' | 'in'
+  | 'like' | 'lt' | 'lteq' | 'moreq' | 'neq' | 'nfinset'
+  | 'nin' | 'notnull' | 'null' | 'to';

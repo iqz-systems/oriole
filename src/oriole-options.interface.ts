@@ -29,7 +29,7 @@ export interface IOrioleOptions {
      * The OAuth access token secret.
      */
     accessTokenSecret: string;
-  },
+  };
   /**
    * The bearer token credentials to integrated the REST client.
    * Must be specified if 'oauth' option is not specified.
@@ -39,5 +39,5 @@ export interface IOrioleOptions {
      * The bearer token.
      */
     token: string;
-  }
+  };
 }

@@ -27,7 +27,7 @@ export class Category {
     if (!this.custom_attributes || (this.custom_attributes.length < 1)) {
       return '';
     }
-    const descriptionAttr = this.custom_attributes.find(attr => attr.attribute_code == 'description');
+    const descriptionAttr = this.custom_attributes.find(attr => attr.attribute_code === 'description');
     if (!descriptionAttr) {
       return '';
     }
@@ -43,7 +43,7 @@ export class Category {
     if (!this.custom_attributes || (this.custom_attributes.length < 1)) {
       return '';
     }
-    const imageAttr = this.custom_attributes.find(attr => attr.attribute_code == 'image');
+    const imageAttr = this.custom_attributes.find(attr => attr.attribute_code === 'image');
     if (!imageAttr) {
       return '';
     }
@@ -56,7 +56,7 @@ export class Category {
    * @return The category image url. Empty string, if not available.
    */
   @Expose() get imageUrl(): string {
-    if (this.image == '') {
+    if (this.image === '') {
       return '';
     }
 

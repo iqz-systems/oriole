@@ -2,7 +2,7 @@ import { SearchFilterGroup } from './search-filter-group';
 
 export class SearchCriteria {
 
-  private filterGroups: SearchFilterGroup[];;
+  private filterGroups: SearchFilterGroup[];
 
   constructor() {
     this.filterGroups = [];

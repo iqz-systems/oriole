@@ -1,4 +1,4 @@
-export namespace Helpers {
+export class Helpers {
 
   /**
    * Sorts object by key and maps them to a key-value pair array.
@@ -6,7 +6,7 @@ export namespace Helpers {
    * @param  data       object to be sorted
    * @return            sorted and mapped result
    */
-  export function sortObject<O extends { [k: string]: any }, K extends string>(data: O): Array<{ key: keyof O, value: O[K] }> {
+  static sortObject<O extends { [k: string]: any }, K extends string>(data: O): Array<{ key: keyof O, value: O[K] }> {
     const keys = Object.keys(data);
     const result = [];
 
@@ -27,7 +27,7 @@ export namespace Helpers {
    * @method getTimeStamp
    * @return current unix timestamp
    */
-  export function getTimeStamp(): number {
+  static getTimeStamp(): number {
     return parseInt((new Date().getTime() / 1000) + '', 10);
   }
 
@@ -37,7 +37,7 @@ export namespace Helpers {
    * @param  str           string to be encoded
    * @return               percent encoded string
    */
-  export function percentEncode(str: string): string {
+  static percentEncode(str: string): string {
     const result = encodeURIComponent(str)
       .replace(/\!/g, '%21')
       .replace(/\*/g, '%2A')
@@ -53,7 +53,7 @@ export namespace Helpers {
    * @param  url        Url with query string
    * @return            Url without query string
    */
-  export function getBaseUrl(url: string): string {
+  static getBaseUrl(url: string): string {
     return url.split('?')[0];
   }
 }
