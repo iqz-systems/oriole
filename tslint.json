@@ -6,7 +6,15 @@
   "jsRules": {
     "no-unused-expression": true
   },
+  "linterOptions": {
+    "exclude": [
+      "src/sample.ts"
+    ]
+  },
   "rules": {
+    "variable-name": [
+      false
+    ],
     "quotemark": [
       true,
       "single"
