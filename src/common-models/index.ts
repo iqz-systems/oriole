@@ -5,3 +5,4 @@ export { SearchFilter } from './search-filter';
 export { CustomAttribute } from './custom-attribute';
 export { CategoryLink } from './category-link';
 export { MediaGalleryEntry } from './media-gallery-entry';
+export { SearchSortOrder } from './search-sort-order';

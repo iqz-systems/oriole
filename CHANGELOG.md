@@ -1,5 +1,32 @@
 # Change log
 
+- [Change log](#change-log)
+    - [0.12.0](#0120)
+    - [0.11.0](#0110)
+      - [0.10.1](#0101)
+    - [0.10.0](#0100)
+    - [0.9.0](#090)
+      - [0.8.1](#081)
+    - [0.8.0 Breaking Changes](#080-breaking-changes)
+    - [0.7.0](#070)
+      - [0.6.1](#061)
+    - [0.6.0](#060)
+      - [0.5.3](#053)
+      - [0.5.2](#052)
+      - [0.5.1](#051)
+    - [0.5.0](#050)
+      - [0.4.2](#042)
+      - [0.4.1](#041)
+    - [0.4.0](#040)
+      - [0.3.1](#031)
+    - [0.3.0](#030)
+
+### 0.12.0
+
+-   Moved `Customer` model into its own client.
+-   Added sort conditions into `SearchCriteria`.
+-   Added `CustomersClient`.
+
 ### 0.11.0
 
 -   Fixed bug in `RestClient` which prevented token based authentication from working correctly.

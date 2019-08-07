@@ -6,8 +6,8 @@ export class Customer {
 
   id: number = 0;
   group_id: number = 0;
-  default_billing: string = '';
-  default_shipping: string = '';
+  default_billing?: string;
+  default_shipping?: string;
   created_at: string = '';
   updated_at: string = '';
   created_in: string = '';
@@ -20,8 +20,8 @@ export class Customer {
   @Type(() => CustomerAddress)
   addresses: CustomerAddress[] = [];
   disable_auto_group_change: number = 0;
+  gender?: number;
 
   @Type(() => CustomerExtensionAttribute)
-  extension_attributes: CustomerExtensionAttribute = new CustomerExtensionAttribute();
-
+  extension_attributes?: CustomerExtensionAttribute;
 }
