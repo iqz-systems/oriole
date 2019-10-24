@@ -154,7 +154,7 @@ interface IResultObject {
 
 export interface ApiCallRequestData {
   url: string;
-  method: string;
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
   data?: object;
 }
 
