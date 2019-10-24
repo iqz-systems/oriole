@@ -6,7 +6,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run lint && npm run build",
     "sample": "npm run build && node ./dist/sample.js",
     "demo": "npm run build && node ./dist/demo.example.js",
     "test": "echo \"Error: no test specified\" && exit 1",
