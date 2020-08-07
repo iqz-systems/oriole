@@ -1,6 +1,6 @@
 {
   "name": "@iqz/oriole",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "description": "A NodeJS REST client for Magento 2 with full Typescript support.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
