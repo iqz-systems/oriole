@@ -28,14 +28,14 @@
   },
   "homepage": "https://github.com/iqz-systems/oriole#readme",
   "devDependencies": {
-    "@types/lodash": "^4.14.144",
-    "@types/node": "^12.11.6",
-    "rimraf": "^3.0.0",
+    "@types/lodash": "^4.14.159",
+    "@types/node": "^12.12.54",
+    "rimraf": "^3.0.2",
     "tslint": "^5.20.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.19.2",
     "class-transformer": "^0.3.1",
     "lodash": "^4.17.15",
     "reflect-metadata": "^0.1.13"
